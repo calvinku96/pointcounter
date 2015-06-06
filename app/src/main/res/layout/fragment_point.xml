@@ -19,14 +19,6 @@
                 android:layout_height="140dp" />
 
             <TextView
-                android:id="@+id/point_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/point_score"
-                android:textSize="105dp" />
-
-            <TextView
                 android:id="@+id/point_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,12 +117,6 @@
                     android:text="@string/point_reset" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/point_view_log"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/point_view_log" 
-                android:onClick="pointViewLog"/>
         </LinearLayout>
 
         <LinearLayout
@@ -167,6 +153,15 @@
                 android:text="@string/point_maxval"
                 android:textSize="100dp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/point_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/point_score"
+            android:textSize="105dp"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 </ScrollView>

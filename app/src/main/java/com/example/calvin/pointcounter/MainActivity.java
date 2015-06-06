@@ -3,21 +3,16 @@ package com.example.calvin.pointcounter;
 import java.util.Locale;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 
 
@@ -52,7 +47,8 @@ public class MainActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
+        //prevent keyboard automatically popup
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
 
@@ -60,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        setGone();
         return true;
     }
 
@@ -72,11 +67,16 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_view_log) {
+            ViewLog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void ViewLog() {
+        //View Log
     }
 
 
@@ -130,32 +130,28 @@ public class MainActivity extends ActionBarActivity {
     public void pointStart(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
-        Space pointScoreSpace = (Space) findViewById(R.id.point_score_space);
-        pointScoreSpace.setVisibility(View.GONE);
         pointSetMaxLayout.setVisibility(View.GONE);
         pointScoreText.setVisibility(View.VISIBLE);
+
+        TextView pointTimeView = (TextView) findViewById(R.id.point_time);
+        pointTimeView.setText("00:00.0");
         //Start
     }
 
     public void pointReset(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
-        Space pointScoreSpace = (Space) findViewById(R.id.point_score_space);
-        pointScoreSpace.setVisibility(View.VISIBLE);
         pointSetMaxLayout.setVisibility(View.VISIBLE);
         pointScoreText.setVisibility(View.GONE);
         //Reset
     }
-    public void pointLeftScore(View view){
+
+    public void pointLeftScore(View view) {
         //Left Player gets the Point
     }
-    public void pointRightScore(View view){
-        //Right Player gets the Point
-    }
 
-    public void setGone() {
-        TextView pointScoreText = (TextView) findViewById(R.id.point_score);
-        pointScoreText.setVisibility(View.GONE);
+    public void pointRightScore(View view) {
+        //Right Player gets the Point
     }
 
 

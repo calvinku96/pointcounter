@@ -19,7 +19,7 @@
     <string name="point_radio_right">Right</string>
     <string name="point_start">Reset and Start</string>
     <string name="point_reset">Reset</string>
-    <string name="point_view_log">View Log</string>
+    <string name="view_log">View Log</string>
     <string name="point_colon">:</string>
     <string name="point_maxval">11</string>
 </resources>
