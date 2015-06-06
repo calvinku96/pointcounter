@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Point Counter</string>
+
+    <string name="title_point">Limited Point</string>
+    <string name="title_time">Limited Time</string>
+    <string name="title_chess">Chess Timer</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_settings">Settings</string>
+
+    //Point
+    <string name="point_score">0:0</string>
+    <string name="point_max">Max Points</string>
+    <string name="point_p1name">Player 1</string>
+    <string name="point_p2name">Player 2</string>
+    <string name="point_score_button">SCORE</string>
+    <string name="point_radio_left">Left</string>
+    <string name="point_radio_right">Right</string>
+    <string name="point_start">Reset and Start</string>
+    <string name="point_reset">Reset</string>
+    <string name="point_view_log">View Log</string>
+    <string name="point_colon">:</string>
+    <string name="point_maxval">11</string>
+</resources>
