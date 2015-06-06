@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -155,4 +156,31 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    //Methods for Time
+    public void timeLeftScore(View view){
+        //Left Player gets the Point
+    }
+    public void timeRightScore(View view){
+        //Right Player gets the Point
+    }
+    public void timeStart(View view){
+        TextView minstring = (TextView)findViewById(R.id.time_init_min);
+        TextView secstring = (TextView)findViewById(R.id.time_init_sec);
+        if(!(minstring.getText().toString().equals("")||secstring.getText().toString().equals(""))) {
+            TextView timetext = (TextView) findViewById(R.id.time_time);
+            timetext.setVisibility(View.VISIBLE);
+            LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
+            settimelayout.setVisibility(View.GONE);
+            //Start
+        }else{
+            Toast.makeText(this,getString(R.string.time_start_not_filled),Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void timeReset(View view){
+        TextView timetext = (TextView)findViewById(R.id.time_time);
+        timetext.setVisibility(View.GONE);
+        LinearLayout settimelayout = (LinearLayout)findViewById(R.id.time_set_time_layout);
+        settimelayout.setVisibility(View.VISIBLE);
+        //Reset
+    }
 }

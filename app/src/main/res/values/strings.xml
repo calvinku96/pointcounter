@@ -4,22 +4,31 @@
     <string name="title_point">Limited Point</string>
     <string name="title_time">Limited Time</string>
     <string name="title_chess">Chess Timer</string>
-
     <string name="hello_world">Hello world!</string>
-
+    <string name="view_log">View Log</string>
     <string name="action_settings">Settings</string>
 
+    //Common
+    <string name="score_zero">0:0</string>
+    <string name="p1name_default">Player 1</string>
+    <string name="p2name_default">Player 2</string>
+    <string name="score_button">SCORE</string>
+    <string name="colon">:</string>
+    <string name="dot">.</string>
+    <string name="doublezero">00</string>
+    <string name="zero">0</string>
+    <string name="start_string">Reset and Start</string>
+    <string name="reset_string">Reset</string>
+
     //Point
-    <string name="point_score">0:0</string>
     <string name="point_max">Max Points</string>
-    <string name="point_p1name">Player 1</string>
-    <string name="point_p2name">Player 2</string>
-    <string name="point_score_button">SCORE</string>
     <string name="point_radio_left">Left</string>
     <string name="point_radio_right">Right</string>
-    <string name="point_start">Reset and Start</string>
-    <string name="point_reset">Reset</string>
-    <string name="view_log">View Log</string>
-    <string name="point_colon">:</string>
     <string name="point_maxval">11</string>
+
+    //Time
+    <string name="time_time_zero">00:00.0</string>
+    <string name="time_min_hint">Min</string>
+    <string name="time_sec_hint">Sec</string>
+    <string name="time_start_not_filled">Please fill in the initial time</string>
 </resources>
