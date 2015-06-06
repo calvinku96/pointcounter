@@ -146,6 +146,12 @@ public class MainActivity extends ActionBarActivity {
         pointScoreText.setVisibility(View.GONE);
         //Reset
     }
+    public void pointLeftScore(View view){
+        //Left Player gets the Point
+    }
+    public void pointRightScore(View view){
+        //Right Player gets the Point
+    }
 
     public void setGone() {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);

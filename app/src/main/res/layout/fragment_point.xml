@@ -69,14 +69,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="@string/point_score_button" />
+                    android:text="@string/point_score_button"
+                    android:onClick="pointLeftScore"/>
 
                 <Button
                     android:id="@+id/point_p2score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="@string/point_score_button" />
+                    android:text="@string/point_score_button"
+                    android:onClick="pointRightScore"/>
 
             </LinearLayout>
 
@@ -127,7 +129,8 @@
                 android:id="@+id/point_view_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/point_view_log" />
+                android:text="@string/point_view_log" 
+                android:onClick="pointViewLog"/>
         </LinearLayout>
 
         <LinearLayout
