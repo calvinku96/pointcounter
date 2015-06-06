@@ -1,171 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:id="@+id/point_score_space" />
-
-        <TextView
-            android:id="@+id/point_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/point_score"
-            android:textSize="105dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/point_max"
-            android:id="@+id/point_time"
-            android:textSize="40dp"
-            android:layout_gravity="center_horizontal" />
-
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <EditText
-                android:layout_width="0dp"
+            <Space
+                android:id="@+id/point_score_space"
+                android:layout_width="match_parent"
+                android:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/point_score"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="@string/point_p1name"
-                android:ems="10"
-                android:id="@+id/point_p1name"
-                android:layout_weight="0.5" />
+                android:layout_gravity="center_horizontal"
+                android:text="@string/point_score"
+                android:textSize="105dp" />
 
-            <EditText
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/point_time"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="@string/point_p2name"
-                android:ems="10"
-                android:id="@+id/point_p2name"
-                android:layout_weight="0.5" />
+                android:layout_gravity="center_horizontal"
+                android:text="@string/point_max"
+                android:textSize="40dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/point_p1name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@string/point_p1name" />
+
+                <EditText
+                    android:id="@+id/point_p2name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@string/point_p2name" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/point_p1score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/point_score_button" />
+
+                <Button
+                    android:id="@+id/point_p2score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/point_score_button" />
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/point_radio_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/point_radio_left" />
+
+                <RadioButton
+                    android:id="@+id/point_radio_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_radio_right" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/point_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="pointStart"
+                    android:text="@string/point_start" />
+
+                <Button
+                    android:id="@+id/point_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="pointReset"
+                    android:text="@string/point_reset" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/point_view_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/point_view_log" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/point_score_button"
-                android:id="@+id/point_p1score"
-                android:layout_weight="0.5"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/point_score_button"
-                android:id="@+id/point_p2score"
-                android:layout_weight="0.5"/>
-
-        </LinearLayout>
-
-        <RadioGroup
+            android:id="@+id/point_setmax_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
-            <RadioButton
+            <EditText
+                android:id="@+id/point_p1max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/point_radio_left"
-                android:id="@+id/point_radio_left"
-                android:checked="true" />
+                android:width="120dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/point_maxval"
+                android:textSize="100dp" />
 
-            <RadioButton
+            <TextView
+                android:id="@+id/point_colon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/point_radio_right"
-                android:id="@+id/point_radio_right" />
+                android:text="@string/point_colon"
+                android:textSize="100dp" />
 
-        </RadioGroup>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/point_p2max"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/point_start"
-                android:id="@+id/point_start"
-                android:layout_weight="1"
-                android:onClick="pointStart" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/point_reset"
-                android:id="@+id/point_reset"
-                android:layout_weight="1"
-                android:onClick="pointReset" />
+                android:width="120dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/point_maxval"
+                android:textSize="100dp" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/point_view_log"
-            android:id="@+id/point_view_log" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/point_setmax_layout"
-        android:layout_centerHorizontal="true">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/point_p1max"
-            android:text="@string/point_maxval"
-            android:textSize="100dp"
-            android:width="120dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/point_colon"
-            android:id="@+id/point_colon"
-            android:textSize="100dp"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/point_p2max"
-            android:text="@string/point_maxval"
-            android:textSize="100dp"
-            android:width="120dp" />
-    </LinearLayout>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
