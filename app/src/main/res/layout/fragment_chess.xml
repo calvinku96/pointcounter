@@ -1,6 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:clickable="true"
+            android:onClick="chessTopPress"
+            android:background="#ffff0000">
+
+            <LinearLayout
+                android:id="@+id/chess_top_init_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/chess_top_init_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="100dp"
+                    android:ems="10"
+                    android:hint="@string/min_hint"
+                    android:inputType="number"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/chess_top_init_colon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textSize="50dp" />
+
+                <EditText
+                    android:id="@+id/chess_top_init_sec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="100dp"
+                    android:ems="10"
+                    android:hint="@string/sec_hint"
+                    android:inputType="number"
+                    android:textSize="50dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:id="@+id/chess_top_time_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_zero"
+                    android:id="@+id/chess_top_time"
+                    android:textSize="80dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_zero"
+                    android:id="@+id/chess_top_time_inv"
+                    android:rotation="180"
+                    android:textSize="80dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:clickable="true"
+            android:onClick="chessBottomPress"
+            android:background="#ff0000ff">
+
+            <LinearLayout
+                android:id="@+id/chess_bottom_init_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/chess_bottom_init_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="100dp"
+                    android:ems="10"
+                    android:hint="@string/min_hint"
+                    android:inputType="number"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/chess_bottom_init_colon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textSize="50dp"
+                    android:textIsSelectable="false" />
+
+                <EditText
+                    android:id="@+id/chess_bottom_init_sec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="100dp"
+                    android:ems="10"
+                    android:hint="@string/sec_hint"
+                    android:inputType="number"
+                    android:textSize="50dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:id="@+id/chess_bottom_time_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_zero"
+                    android:id="@+id/chess_bottom_time"
+                    android:textSize="80dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_zero"
+                    android:id="@+id/chess_bottom_time_inv"
+                    android:rotation="180"
+                    android:textSize="80dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/chess_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="chessStart"
+            android:text="@string/start_string" />
+
+        <Button
+            android:id="@+id/chess_reset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="chessReset"
+            android:text="@string/reset_string" />
 </LinearLayout>
+</RelativeLayout>

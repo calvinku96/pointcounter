@@ -1,5 +1,7 @@
 package com.example.calvin.pointcounter;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +20,14 @@ public class TimeFragment extends Fragment {
         TextView text = (TextView)abc.findViewById(R.id.time_time);
         text.setVisibility(View.GONE);
         return abc;
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            Activity a = getActivity();
+            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        }
     }
 
 }

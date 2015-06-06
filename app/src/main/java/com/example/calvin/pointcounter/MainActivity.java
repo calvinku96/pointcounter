@@ -1,20 +1,21 @@
 package com.example.calvin.pointcounter;
 
-import java.util.Locale;
-
-import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -127,7 +128,12 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    //Methods for PointFragment
+
+    /**
+     * *****************
+     * *Methods for Point**
+     * *****************
+     */
     public void pointStart(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
@@ -156,16 +162,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    //Methods for Time
+    /*******************
+     **Methods for Time**
+     ******************/
     public void timeLeftScore(View view){
         //Left Player gets the Point
     }
     public void timeRightScore(View view){
         //Right Player gets the Point
     }
-    public void timeStart(View view){
-        TextView minstring = (TextView)findViewById(R.id.time_init_min);
-        TextView secstring = (TextView)findViewById(R.id.time_init_sec);
+    public void timeStart(View view) {
+        EditText minstring = (EditText) findViewById(R.id.time_init_min);
+        EditText secstring = (EditText) findViewById(R.id.time_init_sec);
         if(!(minstring.getText().toString().equals("")||secstring.getText().toString().equals(""))) {
             TextView timetext = (TextView) findViewById(R.id.time_time);
             timetext.setVisibility(View.VISIBLE);
@@ -183,4 +191,50 @@ public class MainActivity extends ActionBarActivity {
         settimelayout.setVisibility(View.VISIBLE);
         //Reset
     }
+
+    /**
+     * *****************
+     * *Methods for Chess**
+     * *****************
+     */
+    public void chessStart(View vew) {
+        EditText topminstring = (EditText) findViewById(R.id.chess_top_init_min);
+        EditText topsecstring = (EditText) findViewById(R.id.chess_top_init_sec);
+        EditText bottomminstring = (EditText) findViewById(R.id.chess_bottom_init_min);
+        EditText bottomsecstring = (EditText) findViewById(R.id.chess_bottom_init_sec);
+        if (!(topminstring.getText().toString().equals("") || topsecstring.getText().toString().equals("") || bottomminstring.getText().toString().equals("") || bottomsecstring.getText().toString().equals(""))) {
+            LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
+            LinearLayout bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
+            LinearLayout toptimelayout = (LinearLayout) findViewById(R.id.chess_top_time_layout);
+            LinearLayout bottomtimelayout = (LinearLayout) findViewById(R.id.chess_bottom_time_layout);
+            topinitlayout.setVisibility(View.GONE);
+            bottominitlayout.setVisibility(View.GONE);
+            toptimelayout.setVisibility(View.VISIBLE);
+            bottomtimelayout.setVisibility(View.VISIBLE);
+
+            //Start
+        }
+        else{
+            Toast.makeText(this,getString(R.string.chess_start_not_filled),Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void chessReset(View view){
+        LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
+        LinearLayout bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
+        LinearLayout toptimelayout = (LinearLayout) findViewById(R.id.chess_top_time_layout);
+        LinearLayout bottomtimelayout = (LinearLayout) findViewById(R.id.chess_bottom_time_layout);
+        topinitlayout.setVisibility(View.VISIBLE);
+        bottominitlayout.setVisibility(View.VISIBLE);
+        toptimelayout.setVisibility(View.GONE);
+        bottomtimelayout.setVisibility(View.GONE);
+
+        //Reset
+    }
+    public void chessTopPress(View view){
+        Toast.makeText(this,"Top Pressed",Toast.LENGTH_SHORT).show();
+    }
+    public void chessBottomPress(View view){
+        Toast.makeText(this,"Bottom Pressed",Toast.LENGTH_SHORT).show();
+    }
+
 }

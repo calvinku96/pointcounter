@@ -125,6 +125,15 @@
             android:textSize="105dp"
             android:layout_centerHorizontal="true"/>
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/point_use_deuce"
+            android:id="@+id/point_deuce_checkBox"
+            android:checked="true" />
+
     </RelativeLayout>
     </ScrollView>
 

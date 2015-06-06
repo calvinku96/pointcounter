@@ -19,16 +19,20 @@
     <string name="zero">0</string>
     <string name="start_string">Reset and Start</string>
     <string name="reset_string">Reset</string>
+    <string name="min_hint">Min</string>
+    <string name="sec_hint">Sec</string>
+    <string name="time_zero">00:00.0</string>
 
     //Point
     <string name="point_max">Max Points</string>
     <string name="point_radio_left">Left</string>
     <string name="point_radio_right">Right</string>
     <string name="point_maxval">11</string>
+    <string name="point_use_deuce">Have Deuce?</string>
 
     //Time
-    <string name="time_time_zero">00:00.0</string>
-    <string name="time_min_hint">Min</string>
-    <string name="time_sec_hint">Sec</string>
     <string name="time_start_not_filled">Please fill in the initial time</string>
+
+    //Chess'
+    <string name="chess_start_not_filled">Please fill in the initial time</string>
 </resources>
