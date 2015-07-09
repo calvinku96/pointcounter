@@ -139,6 +139,8 @@ public class MainActivity extends ActionBarActivity {
 
     Player pointp1;
     Player pointp2;
+    Timer pointtimer;
+    boolean pointgamestate;
 
     public void pointStart(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
@@ -154,13 +156,15 @@ public class MainActivity extends ActionBarActivity {
 
         TextView pointTimeView = (TextView) findViewById(R.id.point_time);
         pointTimeView.setText("00:00.0");
+        pointgamestate = true;
         //Start
         //String name, Initial Score, Max Score, Deuce Checkbox
         pointp1 = new Player(point_p1name.getText().toString(), 0,
                 Integer.parseInt(point_p1max.getText().toString()), checkBox.isChecked());
         pointp2 = new Player(point_p2name.getText().toString(), 0,
                 Integer.parseInt(point_p2max.getText().toString()), checkBox.isChecked());
-
+        pointtimer = new Timer(pointTimeView, 0l);
+        pointtimer.resumeTimer();
     }
 
     public void pointReset(View view) {
@@ -169,18 +173,59 @@ public class MainActivity extends ActionBarActivity {
         pointSetMaxLayout.setVisibility(View.VISIBLE);
         pointScoreText.setVisibility(View.GONE);
         //Reset
-        //P1.resetScore();
-        //P2.resetScore();
+        if (pointp1 != null) {
+            pointp1.resetScore();
+            pointp2.resetScore();
+        }
     }
 
     public void pointLeftScore(View view) {
         //Left Player gets the Point
-        //P1.addScore(1);
+        if (pointgamestate) {
+            TextView pointScoreText = (TextView) findViewById(R.id.point_score);
+
+            pointp1.addScore(1);
+            pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
+            checkGameEnd(pointp1, pointp2);
+        } else {
+            Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void pointRightScore(View view) {
         //Right Player gets the Point
-        //P2.addScore(1);
+        if (pointgamestate) {
+            TextView pointScoreText = (TextView) findViewById(R.id.point_score);
+
+            pointp2.addScore(1);
+            pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
+            checkGameEnd(pointp2, pointp1);
+        } else {
+            Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void checkGameEnd(Player win, Player lose) {
+        //End game
+        if (win.isScoreMax()) {
+            pointtimer.pauseTimer();
+            pointgamestate = false;
+
+            //output winner
+            Toast.makeText(this, win.getName() + " " + getString(R.string.winner), Toast.LENGTH_SHORT).show();
+        }
+
+        //Deuce
+        if (win.matchPoint() && lose.matchPoint()) {
+            win.deuce(1);
+            lose.deuce(1);
+            Toast.makeText(this, getString(R.string.deuce), Toast.LENGTH_SHORT).show();
+        }
+
+        //Match point
+        else if (win.matchPoint()) {
+            Toast.makeText(this, getString(R.string.matchpoint), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
