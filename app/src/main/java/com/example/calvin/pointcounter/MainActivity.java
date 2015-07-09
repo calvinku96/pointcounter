@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -156,6 +157,7 @@ public class MainActivity extends ActionBarActivity {
 
         TextView pointTimeView = (TextView) findViewById(R.id.point_time);
         pointTimeView.setText("00:00.0");
+        pointScoreText.setText("0:0");
         pointgamestate = true;
         //Start
         //String name, Initial Score, Max Score, Deuce Checkbox
@@ -174,8 +176,10 @@ public class MainActivity extends ActionBarActivity {
         pointScoreText.setVisibility(View.GONE);
         //Reset
         if (pointp1 != null) {
+            pointScoreText.setText("0:0");
             pointp1.resetScore();
             pointp2.resetScore();
+            pointtimer.resetTimer();
         }
     }
 
@@ -186,6 +190,7 @@ public class MainActivity extends ActionBarActivity {
 
             pointp1.addScore(1);
             pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
+            changeLeftRight();
             checkGameEnd(pointp1, pointp2);
         } else {
             Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
@@ -198,6 +203,7 @@ public class MainActivity extends ActionBarActivity {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
 
             pointp2.addScore(1);
+            changeLeftRight();
             pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
             checkGameEnd(pointp2, pointp1);
         } else {
@@ -205,6 +211,24 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void changeLeftRight()
+    {
+        RadioButton leftradio = (RadioButton) findViewById(R.id.point_radio_left);
+        RadioButton rightradio = (RadioButton) findViewById(R.id.point_radio_right);
+
+        if(leftradio.isChecked())
+        {
+            //If left radio button on, set left off and right on
+            leftradio.setChecked(false);
+            rightradio.setChecked(true);
+        }
+        else
+        {
+            //If right radio button on, set left on and right off
+            leftradio.setChecked(true);
+            rightradio.setChecked(false);
+        }
+    }
     public void checkGameEnd(Player win, Player lose) {
         //End game
         if (win.isScoreMax()) {
@@ -216,7 +240,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         //Deuce
-        if (win.matchPoint() && lose.matchPoint()) {
+        if (win.matchPoint() && lose.matchPoint() && win.usedeuce) {
             win.deuce(1);
             lose.deuce(1);
             Toast.makeText(this, getString(R.string.deuce), Toast.LENGTH_SHORT).show();
