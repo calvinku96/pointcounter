@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -134,15 +135,29 @@ public class MainActivity extends ActionBarActivity {
      * *Methods for Point**
      * *****************
      */
+
+    Player pointp1;
+    Player pointp2;
     public void pointStart(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         pointSetMaxLayout.setVisibility(View.GONE);
         pointScoreText.setVisibility(View.VISIBLE);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.point_deuce_checkBox);
+        EditText point_p1name = (EditText) findViewById(R.id.point_p1name);
+        EditText point_p1max = (EditText) findViewById(R.id.point_p1max);
+        EditText point_p2name = (EditText) findViewById(R.id.point_p2name);
+        EditText point_p2max = (EditText) findViewById(R.id.point_p2max);
 
         TextView pointTimeView = (TextView) findViewById(R.id.point_time);
         pointTimeView.setText("00:00.0");
         //Start
+        //String name, Initial Score, Max Score, Deuce Checkbox
+        pointp1 = new Player(point_p1name.getText().toString(),0,
+                            Integer.parseInt(point_p1max.getText().toString()),checkBox.isChecked());
+        pointp2 = new Player(point_p2name.getText().toString(),0,
+                            Integer.parseInt(point_p2max.getText().toString()),checkBox.isChecked());
+
     }
 
     public void pointReset(View view) {
@@ -151,16 +166,19 @@ public class MainActivity extends ActionBarActivity {
         pointSetMaxLayout.setVisibility(View.VISIBLE);
         pointScoreText.setVisibility(View.GONE);
         //Reset
+        //P1.resetScore();
+        //P2.resetScore();
     }
 
     public void pointLeftScore(View view) {
         //Left Player gets the Point
+        //P1.addScore(1);
     }
 
     public void pointRightScore(View view) {
         //Right Player gets the Point
+        //P2.addScore(1);
     }
-
 
     /*******************
      **Methods for Time**
