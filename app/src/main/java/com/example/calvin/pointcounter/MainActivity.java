@@ -1,6 +1,7 @@
 package com.example.calvin.pointcounter;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -138,12 +139,14 @@ public class MainActivity extends ActionBarActivity {
 
     Player pointp1;
     Player pointp2;
+
     public void pointStart(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         pointSetMaxLayout.setVisibility(View.GONE);
         pointScoreText.setVisibility(View.VISIBLE);
         CheckBox checkBox = (CheckBox) findViewById(R.id.point_deuce_checkBox);
+
         EditText point_p1name = (EditText) findViewById(R.id.point_p1name);
         EditText point_p1max = (EditText) findViewById(R.id.point_p1max);
         EditText point_p2name = (EditText) findViewById(R.id.point_p2name);
@@ -153,10 +156,10 @@ public class MainActivity extends ActionBarActivity {
         pointTimeView.setText("00:00.0");
         //Start
         //String name, Initial Score, Max Score, Deuce Checkbox
-        pointp1 = new Player(point_p1name.getText().toString(),0,
-                            Integer.parseInt(point_p1max.getText().toString()),checkBox.isChecked());
-        pointp2 = new Player(point_p2name.getText().toString(),0,
-                            Integer.parseInt(point_p2max.getText().toString()),checkBox.isChecked());
+        pointp1 = new Player(point_p1name.getText().toString(), 0,
+                Integer.parseInt(point_p1max.getText().toString()), checkBox.isChecked());
+        pointp2 = new Player(point_p2name.getText().toString(), 0,
+                Integer.parseInt(point_p2max.getText().toString()), checkBox.isChecked());
 
     }
 
@@ -180,32 +183,41 @@ public class MainActivity extends ActionBarActivity {
         //P2.addScore(1);
     }
 
-    /*******************
-     **Methods for Time**
-     ******************/
-    public void timeLeftScore(View view){
+    /**
+     * ****************
+     * *Methods for Time**
+     * ****************
+     */
+    public void timeUp() {
+        //Finishes game
+    }
+
+    public void timeLeftScore(View view) {
         //Left Player gets the Point
     }
-    public void timeRightScore(View view){
+
+    public void timeRightScore(View view) {
         //Right Player gets the Point
     }
+
     public void timeStart(View view) {
         EditText minstring = (EditText) findViewById(R.id.time_init_min);
         EditText secstring = (EditText) findViewById(R.id.time_init_sec);
-        if(!(minstring.getText().toString().equals("")||secstring.getText().toString().equals(""))) {
+        if (!(minstring.getText().toString().equals("") || secstring.getText().toString().equals(""))) {
             TextView timetext = (TextView) findViewById(R.id.time_time);
             timetext.setVisibility(View.VISIBLE);
             LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
             settimelayout.setVisibility(View.GONE);
             //Start
-        }else{
-            Toast.makeText(this,getString(R.string.time_start_not_filled),Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.time_start_not_filled), Toast.LENGTH_SHORT).show();
         }
     }
-    public void timeReset(View view){
-        TextView timetext = (TextView)findViewById(R.id.time_time);
+
+    public void timeReset(View view) {
+        TextView timetext = (TextView) findViewById(R.id.time_time);
         timetext.setVisibility(View.GONE);
-        LinearLayout settimelayout = (LinearLayout)findViewById(R.id.time_set_time_layout);
+        LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
         settimelayout.setVisibility(View.VISIBLE);
         //Reset
     }
@@ -231,12 +243,12 @@ public class MainActivity extends ActionBarActivity {
             bottomtimelayout.setVisibility(View.VISIBLE);
 
             //Start
-        }
-        else{
-            Toast.makeText(this,getString(R.string.chess_start_not_filled),Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.chess_start_not_filled), Toast.LENGTH_SHORT).show();
         }
     }
-    public void chessReset(View view){
+
+    public void chessReset(View view) {
         LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
         LinearLayout bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
         LinearLayout toptimelayout = (LinearLayout) findViewById(R.id.chess_top_time_layout);
@@ -248,11 +260,122 @@ public class MainActivity extends ActionBarActivity {
 
         //Reset
     }
-    public void chessTopPress(View view){
-        Toast.makeText(this,"Top Pressed",Toast.LENGTH_SHORT).show();
-    }
-    public void chessBottomPress(View view){
-        Toast.makeText(this,"Bottom Pressed",Toast.LENGTH_SHORT).show();
+
+    public void chessTopPress(View view) {
+        Toast.makeText(this, "Top Pressed", Toast.LENGTH_SHORT).show();
     }
 
+    public void chessBottomPress(View view) {
+        Toast.makeText(this, "Bottom Pressed", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Timer Class
+     */
+    public class Timer {
+
+        long starttime;
+        long elapsedtime;
+        long thresholdtime;
+        String curtime;
+        private final int REFRESH_RATE = 100;
+        private Handler mHandler = new Handler();
+        TextView currenttime;
+
+        public Timer(TextView currenttime, long thresholdtime) {
+            this.starttime = System.currentTimeMillis();
+            this.thresholdtime = thresholdtime;
+            this.currenttime = currenttime;
+            mHandler.removeCallbacks(this.startTimer);
+        }
+
+        public void resetTimer() {
+            mHandler.removeCallbacks(startTimer);
+            elapsedtime = 0;
+            currenttime.setText("00:00:0");
+        }
+
+        public void pauseTimer() {
+            mHandler.removeCallbacks(startTimer);
+        }
+
+        public void resumeTimer() {
+            starttime = System.currentTimeMillis() - elapsedtime;
+            mHandler.removeCallbacks(startTimer);
+            mHandler.postDelayed(startTimer, 0);
+        }
+
+        public boolean timeLimit() {
+            if ((elapsedtime >= thresholdtime) && (thresholdtime != 0l)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private Runnable startTimer = new Runnable() {
+            public void run() {
+                elapsedtime = System.currentTimeMillis() - starttime;
+                curtime = updateTimer(elapsedtime);
+
+                if (timeLimit()) {
+                    pauseTimer();
+                    //call to main activity
+                    timeUp();
+                }
+                currenttime.setText(curtime);
+                mHandler.postDelayed(this, REFRESH_RATE);
+            }
+        };
+
+        private String updateTimer(float time) {
+            long secs, mins;
+            String seconds, minutes, milliseconds;
+
+            //For countdown
+            if (thresholdtime > 0) {
+                time = thresholdtime - time;
+            }
+
+            //variable time is in millisecond
+            secs = (long) (time / 1000);
+            mins = (long) ((time / 1000) / 60);
+
+		/* Convert the seconds to String
+         * and format to ensure it has
+		 * a leading zero when required
+		 */
+            secs = secs % 60;
+            seconds = String.valueOf(secs);
+            if (secs == 0) {
+                seconds = "00";
+            }
+            if (secs < 10 && secs > 0) {
+                seconds = "0" + seconds;
+            }
+
+		/* Convert the minutes to String and format the String */
+
+            minutes = String.valueOf(mins);
+            if (mins == 0) {
+                minutes = "00";
+            }
+            if (mins < 10 && mins > 0) {
+                minutes = "0" + minutes;
+            }
+
+            milliseconds = String.valueOf((long) time);
+            if (milliseconds.length() == 2) {
+                milliseconds = "0" + milliseconds;
+            }
+            if (milliseconds.length() <= 1) {
+                milliseconds = "00";
+            }
+            milliseconds = milliseconds.substring(milliseconds.length() - 3, milliseconds.length() - 2);
+
+		/* Setting the timer text to the elapsed time */
+            return minutes + ":" + seconds + "." + milliseconds;
+        }
+    }
 }
+
