@@ -18,6 +18,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -37,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    public static String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
 
         //prevent keyboard automatically popup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        path = getFilesDir().getAbsolutePath();
     }
 
 
@@ -142,8 +146,9 @@ public class MainActivity extends ActionBarActivity {
     Player pointp2;
     Timer pointtimer;
     boolean pointgamestate;
+    Log pointlog;
 
-    public void pointStart(View view) {
+    public void pointStart(View view) throws FileNotFoundException, IOException {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         pointSetMaxLayout.setVisibility(View.GONE);
@@ -167,11 +172,27 @@ public class MainActivity extends ActionBarActivity {
                 Integer.parseInt(point_p2max.getText().toString()), checkBox.isChecked());
         pointtimer = new Timer(pointTimeView, 0l);
         pointtimer.resumeTimer();
-        checkBox.setEnabled(false);
         pointMakeStatusText(getString(R.string.point_game_started));
+        //Log
+        pointlog = new Log(path + "/point.log");
+        pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+        pointlog.addText(getString(R.string.point_game_started));
+        pointlog.addCode(Log.CONST_LINE_BREAK);
+        pointlog.addText(getString(R.string.player1semicolon) + " " + pointp1.getName());
+        pointlog.addCode(Log.CONST_LINE_BREAK);
+        pointlog.addText(getString(R.string.player2semicolon) + " " + pointp2.getName());
+        pointlog.addCode(Log.CONST_LINE_BREAK);
+        pointlog.addText(getString(R.string.point_use_deuce)
+                + " " + String.valueOf(checkBox.isChecked()));
+        pointlog.addCode(Log.CONST_LINE_BREAK);
+        pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+        pointlog.addCode(Log.CONST_LINE_BREAK);
+        pointlog.saveLog();
+        //Disable Deuce CheckBox
+        checkBox.setEnabled(false);
     }
 
-    public void pointReset(View view) {
+    public void pointReset(View view) throws IOException {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         CheckBox checkBox = (CheckBox) findViewById(R.id.point_deuce_checkBox);
@@ -183,19 +204,29 @@ public class MainActivity extends ActionBarActivity {
             pointp1.resetScore();
             pointp2.resetScore();
             pointtimer.resetTimer();
+            //Log
+            pointlog.addText(getString(R.string.reset));
+            pointlog.addCode(Log.CONST_LINE_BREAK);
+            pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+            for (int i = 0; i < 3; i++) {
+                pointlog.addCode(Log.CONST_LINE_BREAK);
+            }
+            pointlog.saveLog();
         }
         checkBox.setEnabled(true);
     }
 
-    public void pointLeftScore(View view) {
+    public void pointLeftScore(View view) throws IOException {
         //Left Player gets the Point
         if (pointgamestate) {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
             pointp1.addScore(1);
             pointScoreText.setText(Integer.toString(pointp1.getScore())
                     + ":" + Integer.toString(pointp2.getScore()));
+            pointMakeStatusText(pointp1.getName() + " " + getString(R.string.point_scores));
+            pointlog.addText(pointp1.getName() + " " + getString(R.string.point_scores));
+            pointlog.addCodeAndSave(Log.CONST_LINE_BREAK);
             pointChangeLeftRight();
-            pointMakeStatusText(pointp1.getName() + " "  + getString(R.string.point_scores));
             checkGameEnd(pointp1, pointp2);
         } else {
             Toast.makeText(this, getString(R.string.point_game_not_start),
@@ -203,41 +234,45 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void pointRightScore(View view) {
+    public void pointRightScore(View view) throws IOException {
         //Right Player gets the Point
         if (pointgamestate) {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
 
             pointp2.addScore(1);
-            pointChangeLeftRight();
             pointScoreText.setText(Integer.toString(pointp1.getScore())
                     + ":" + Integer.toString(pointp2.getScore()));
             pointMakeStatusText(pointp2.getName() + " " + getString(R.string.point_scores));
+            pointlog.addText(pointp2.getName() + " " + getString(R.string.point_scores));
+            pointlog.addCodeAndSave(Log.CONST_LINE_BREAK);
+            pointChangeLeftRight();
             checkGameEnd(pointp2, pointp1);
         } else {
             Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void pointChangeLeftRight()
-    {
+    public void pointChangeLeftRight() throws IOException {
         RadioButton leftradio = (RadioButton) findViewById(R.id.point_radio_left);
         RadioButton rightradio = (RadioButton) findViewById(R.id.point_radio_right);
 
-        if(leftradio.isChecked())
-        {
+        if (leftradio.isChecked()) {
             //If left radio button on, set left off and right on
             leftradio.setChecked(false);
             rightradio.setChecked(true);
-        }
-        else
-        {
+            pointlog.addText(getString(R.string.point_radio_position)
+                    + " " + getString(R.string.point_right));
+            pointlog.addCodeAndSave(Log.CONST_LINE_BREAK);
+        } else {
             //If right radio button on, set left on and right off
             leftradio.setChecked(true);
             rightradio.setChecked(false);
+            pointlog.addText(getString(R.string.point_radio_position)
+                    + " " + getString(R.string.point_left));
         }
     }
-    public void checkGameEnd(Player win, Player lose) {
+
+    public void checkGameEnd(Player win, Player lose) throws IOException {
         //End game
         if (win.isScoreMax()) {
             pointtimer.pauseTimer();
@@ -245,6 +280,13 @@ public class MainActivity extends ActionBarActivity {
 
             //output winner
             pointMakeStatusText(win.getName() + " " + getString(R.string.winner));
+            pointlog.addText(win.getName() + " " + getString(R.string.winner));
+            pointlog.addCode(Log.CONST_LINE_BREAK);
+            pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+            for (int i = 0; i < 3; i++) {
+                pointlog.addCode(Log.CONST_LINE_BREAK);
+            }
+            pointlog.saveLog();
         }
 
         //Deuce
@@ -252,14 +294,29 @@ public class MainActivity extends ActionBarActivity {
             win.deuce(1);
             lose.deuce(1);
             pointMakeStatusText(getString(R.string.deuce));
+            pointlog.addText(getString(R.string.deuce));
+            pointlog.addCode(Log.CONST_LINE_BREAK);
+            pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+            for (int i = 0; i < 3; i++) {
+                pointlog.addCode(Log.CONST_LINE_BREAK);
+            }
+            pointlog.saveLog();
         }
 
         //Match point
         else if (win.matchPoint()) {
             pointMakeStatusText(getString(R.string.matchpoint));
+            pointlog.addText(getString(R.string.matchpoint));
+            pointlog.addCode(Log.CONST_LINE_BREAK);
+            pointlog.addCode(Log.CONST_TWENTY_EQUALS);
+            for (int i = 0; i < 3; i++) {
+                pointlog.addCode(Log.CONST_LINE_BREAK);
+            }
+            pointlog.saveLog();
         }
     }
-    public void pointMakeStatusText(String string){
+
+    public void pointMakeStatusText(String string) {
         //Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
         TextView pointstatustext = (TextView) findViewById(R.id.point_status_text);
         pointstatustext.setVisibility(View.VISIBLE);
@@ -279,7 +336,6 @@ public class MainActivity extends ActionBarActivity {
     public void timeRightScore(View view) {
         //Right Player gets the Point
     }
-
 
 
     public void timeStart(View view) {
@@ -306,7 +362,7 @@ public class MainActivity extends ActionBarActivity {
         //Reset
     }
 
-    public void timeUp(){
+    public void timeUp() {
         //Finishes Game
     }
 

@@ -26,6 +26,10 @@
     <string name="deuce">Deuce!</string>
     <string name="matchpoint">Match Point!</string>
     <string name="statustext">Status</string>
+    <string name="player1semicolon">Player 1:</string>
+    <string name="player2semicolon">Player 2:</string>
+    <string name="reset">Game reset</string>
+
     //Point
     <string name="point_max">Max Points</string>
     <string name="point_radio_left">Left</string>
@@ -35,6 +39,10 @@
     <string name="point_game_not_start">Please start game first</string>
     <string name="point_game_started">Game Started</string>
     <string name="point_scores">scores!</string>
+    <string name="point_usedeuce">Use deuce:</string>
+    <string name="point_radio_position">Position:</string>
+    <string name="point_left">left</string>
+    <string name="point_right">right</string>
 
     //Time
     <string name="time_start_not_filled">Please fill in the initial time</string>
