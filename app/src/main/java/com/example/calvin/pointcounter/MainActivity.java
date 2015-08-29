@@ -167,11 +167,14 @@ public class MainActivity extends ActionBarActivity {
                 Integer.parseInt(point_p2max.getText().toString()), checkBox.isChecked());
         pointtimer = new Timer(pointTimeView, 0l);
         pointtimer.resumeTimer();
+        checkBox.setEnabled(false);
+        pointMakeStatusText(getString(R.string.point_game_started));
     }
 
     public void pointReset(View view) {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.point_deuce_checkBox);
         pointSetMaxLayout.setVisibility(View.VISIBLE);
         pointScoreText.setVisibility(View.GONE);
         //Reset
@@ -181,19 +184,22 @@ public class MainActivity extends ActionBarActivity {
             pointp2.resetScore();
             pointtimer.resetTimer();
         }
+        checkBox.setEnabled(true);
     }
 
     public void pointLeftScore(View view) {
         //Left Player gets the Point
         if (pointgamestate) {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
-
             pointp1.addScore(1);
-            pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
-            changeLeftRight();
+            pointScoreText.setText(Integer.toString(pointp1.getScore())
+                    + ":" + Integer.toString(pointp2.getScore()));
+            pointChangeLeftRight();
+            pointMakeStatusText(pointp1.getName() + " "  + getString(R.string.point_scores));
             checkGameEnd(pointp1, pointp2);
         } else {
-            Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.point_game_not_start),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -203,15 +209,17 @@ public class MainActivity extends ActionBarActivity {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
 
             pointp2.addScore(1);
-            changeLeftRight();
-            pointScoreText.setText(Integer.toString(pointp1.getScore()) + ":" + Integer.toString(pointp2.getScore()));
+            pointChangeLeftRight();
+            pointScoreText.setText(Integer.toString(pointp1.getScore())
+                    + ":" + Integer.toString(pointp2.getScore()));
+            pointMakeStatusText(pointp2.getName() + " " + getString(R.string.point_scores));
             checkGameEnd(pointp2, pointp1);
         } else {
             Toast.makeText(this, getString(R.string.point_game_not_start), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void changeLeftRight()
+    public void pointChangeLeftRight()
     {
         RadioButton leftradio = (RadioButton) findViewById(R.id.point_radio_left);
         RadioButton rightradio = (RadioButton) findViewById(R.id.point_radio_right);
@@ -236,20 +244,26 @@ public class MainActivity extends ActionBarActivity {
             pointgamestate = false;
 
             //output winner
-            Toast.makeText(this, win.getName() + " " + getString(R.string.winner), Toast.LENGTH_SHORT).show();
+            pointMakeStatusText(win.getName() + " " + getString(R.string.winner));
         }
 
         //Deuce
         if (win.matchPoint() && lose.matchPoint() && win.usedeuce) {
             win.deuce(1);
             lose.deuce(1);
-            Toast.makeText(this, getString(R.string.deuce), Toast.LENGTH_SHORT).show();
+            pointMakeStatusText(getString(R.string.deuce));
         }
 
         //Match point
         else if (win.matchPoint()) {
-            Toast.makeText(this, getString(R.string.matchpoint), Toast.LENGTH_SHORT).show();
+            pointMakeStatusText(getString(R.string.matchpoint));
         }
+    }
+    public void pointMakeStatusText(String string){
+        //Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        TextView pointstatustext = (TextView) findViewById(R.id.point_status_text);
+        pointstatustext.setVisibility(View.VISIBLE);
+        pointstatustext.setText(string);
     }
 
     /**
@@ -257,9 +271,6 @@ public class MainActivity extends ActionBarActivity {
      * *Methods for Time**
      * ****************
      */
-    public void timeUp() {
-        //Finishes game
-    }
 
     public void timeLeftScore(View view) {
         //Left Player gets the Point
@@ -269,17 +280,21 @@ public class MainActivity extends ActionBarActivity {
         //Right Player gets the Point
     }
 
+
+
     public void timeStart(View view) {
         EditText minstring = (EditText) findViewById(R.id.time_init_min);
         EditText secstring = (EditText) findViewById(R.id.time_init_sec);
-        if (!(minstring.getText().toString().equals("") || secstring.getText().toString().equals(""))) {
+        if (!(minstring.getText().toString().equals("")
+                || secstring.getText().toString().equals(""))) {
             TextView timetext = (TextView) findViewById(R.id.time_time);
             timetext.setVisibility(View.VISIBLE);
             LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
             settimelayout.setVisibility(View.GONE);
             //Start
         } else {
-            Toast.makeText(this, getString(R.string.time_start_not_filled), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.time_start_not_filled),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -289,6 +304,10 @@ public class MainActivity extends ActionBarActivity {
         LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
         settimelayout.setVisibility(View.VISIBLE);
         //Reset
+    }
+
+    public void timeUp(){
+        //Finishes Game
     }
 
     /**
@@ -301,11 +320,16 @@ public class MainActivity extends ActionBarActivity {
         EditText topsecstring = (EditText) findViewById(R.id.chess_top_init_sec);
         EditText bottomminstring = (EditText) findViewById(R.id.chess_bottom_init_min);
         EditText bottomsecstring = (EditText) findViewById(R.id.chess_bottom_init_sec);
-        if (!(topminstring.getText().toString().equals("") || topsecstring.getText().toString().equals("") || bottomminstring.getText().toString().equals("") || bottomsecstring.getText().toString().equals(""))) {
+        if (!(topminstring.getText().toString().equals("")
+                || topsecstring.getText().toString().equals("")
+                || bottomminstring.getText().toString().equals("")
+                || bottomsecstring.getText().toString().equals(""))) {
             LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
-            LinearLayout bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
+            LinearLayout bottominitlayout;
+            bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
             LinearLayout toptimelayout = (LinearLayout) findViewById(R.id.chess_top_time_layout);
-            LinearLayout bottomtimelayout = (LinearLayout) findViewById(R.id.chess_bottom_time_layout);
+            LinearLayout bottomtimelayout;
+            bottomtimelayout = (LinearLayout) findViewById(R.id.chess_bottom_time_layout);
             topinitlayout.setVisibility(View.GONE);
             bottominitlayout.setVisibility(View.GONE);
             toptimelayout.setVisibility(View.VISIBLE);
@@ -440,7 +464,8 @@ public class MainActivity extends ActionBarActivity {
             if (milliseconds.length() <= 1) {
                 milliseconds = "00";
             }
-            milliseconds = milliseconds.substring(milliseconds.length() - 3, milliseconds.length() - 2);
+            milliseconds = milliseconds.substring(milliseconds.length() - 3,
+                    milliseconds.length() - 2);
 
 		/* Setting the timer text to the elapsed time */
             return minutes + ":" + seconds + "." + milliseconds;

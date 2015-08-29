@@ -20,6 +20,8 @@ public class PointFragment extends Fragment {
         View abc =  inflater.inflate(R.layout.fragment_point, container, false);
         TextView pointScoreText = (TextView) abc.findViewById(R.id.point_score);
         pointScoreText.setVisibility(View.GONE);
+        TextView pointstatustext = (TextView) abc.findViewById(R.id.point_status_text);
+        pointstatustext.setVisibility(View.GONE);
         return abc;
     }
     @Override
@@ -27,7 +29,7 @@ public class PointFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser) {
             Activity a = getActivity();
-            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 

@@ -25,13 +25,16 @@
     <string name="winner">wins!</string>
     <string name="deuce">Deuce!</string>
     <string name="matchpoint">Match Point!</string>
+    <string name="statustext">Status</string>
     //Point
     <string name="point_max">Max Points</string>
     <string name="point_radio_left">Left</string>
     <string name="point_radio_right">Right</string>
     <string name="point_maxval">11</string>
     <string name="point_use_deuce">Have Deuce?</string>
-    <string name="point_game_not_start">Please start game first</string>>
+    <string name="point_game_not_start">Please start game first</string>
+    <string name="point_game_started">Game Started</string>
+    <string name="point_scores">scores!</string>
 
     //Time
     <string name="time_start_not_filled">Please fill in the initial time</string>
