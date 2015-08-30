@@ -17,8 +17,10 @@ public class TimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View abc = inflater.inflate(R.layout.fragment_time, container, false);
-        TextView text = (TextView)abc.findViewById(R.id.time_time);
+        TextView text = (TextView) abc.findViewById(R.id.time_time);
+        TextView timestatustext = (TextView) abc.findViewById(R.id.time_status_text);
         text.setVisibility(View.GONE);
+        timestatustext.setVisibility(View.GONE);
         return abc;
     }
     @Override

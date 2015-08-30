@@ -3,13 +3,12 @@ package com.example.calvin.pointcounter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOError;
 import java.io.IOException;
 
 /**
  * Created by calvin on 8/29/15.
  */
-public class Log {
+public class Logs {
     //String path = getFilesDir().getAbsolutePath() + "/(point)(time)(chess).log";
     //FileOutputStream stream = new FileOutputStream(file, file.exists());
     String tempLogString = "";
@@ -18,7 +17,7 @@ public class Log {
     public static final int CONST_LINE_BREAK = 0;
     public static final int CONST_TWENTY_EQUALS = 1;
 
-    public Log(String path) throws FileNotFoundException {
+    public Logs(String path) throws FileNotFoundException {
         //Init Log
         file = new File(path);
         //Some more init log

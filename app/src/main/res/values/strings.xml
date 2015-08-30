@@ -29,6 +29,8 @@
     <string name="player1semicolon">Player 1:</string>
     <string name="player2semicolon">Player 2:</string>
     <string name="reset">Game reset</string>
+    <string name="game_not_start">Please start game first</string>
+    <string name="scores">scores!</string>
 
     //Point
     <string name="point_max">Max Points</string>
@@ -36,9 +38,7 @@
     <string name="point_radio_right">Right</string>
     <string name="point_maxval">11</string>
     <string name="point_use_deuce">Have Deuce?</string>
-    <string name="point_game_not_start">Please start game first</string>
     <string name="point_game_started">Game Started</string>
-    <string name="point_scores">scores!</string>
     <string name="point_usedeuce">Use deuce:</string>
     <string name="point_radio_position">Position:</string>
     <string name="point_left">left</string>
@@ -46,6 +46,10 @@
 
     //Time
     <string name="time_start_not_filled">Please fill in the initial time</string>
+    <string name="time_game_started">Game Started</string>
+    <string name="time_time_limit_string">Time Limit:</string>
+    <string name="time_time_up">Time Up!</string>
+    <string name="time_draw">Draw!</string>
 
     //Chess'
     <string name="chess_start_not_filled">Please fill in the initial time</string>
