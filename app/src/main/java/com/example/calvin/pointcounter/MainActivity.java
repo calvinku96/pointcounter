@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    CustomViewPager mViewPager;
     public static String path;
 
     @Override
@@ -52,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         //prevent keyboard automatically popup
@@ -103,15 +103,13 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if ((!pointgamestate) && (!timegamestate) && (!chessgamestate)) {
-                switch (position) {
-                    case 0:
-                        return new PointFragment();
-                    case 1:
-                        return new TimeFragment();
-                    case 2:
-                        return new ChessFragment();
-                }
+            switch (position) {
+                case 0:
+                    return new PointFragment();
+                case 1:
+                    return new TimeFragment();
+                case 2:
+                    return new ChessFragment();
             }
             return null;
         }
@@ -192,6 +190,8 @@ public class MainActivity extends ActionBarActivity {
         pointlog.saveLog();
         //Disable Deuce CheckBox
         checkBox.setEnabled(false);
+
+        mViewPager.setPagingEnabled(false);
     }
 
     public void pointReset(View view) throws IOException {
@@ -216,6 +216,7 @@ public class MainActivity extends ActionBarActivity {
             pointlog.saveLog();
         }
         checkBox.setEnabled(true);
+        mViewPager.setPagingEnabled(true);
     }
 
     public void pointLeftScore(View view) throws IOException {
@@ -368,6 +369,7 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, getString(R.string.time_start_not_filled),
                     Toast.LENGTH_SHORT).show();
         }
+        mViewPager.setPagingEnabled(false);
     }
 
     public void timeReset(View view) {
@@ -376,6 +378,7 @@ public class MainActivity extends ActionBarActivity {
         LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
         settimelayout.setVisibility(View.VISIBLE);
         //Reset
+        mViewPager.setPagingEnabled(true);
     }
 
     public void timeUp() {
@@ -413,6 +416,7 @@ public class MainActivity extends ActionBarActivity {
         } else {
             Toast.makeText(this, getString(R.string.chess_start_not_filled), Toast.LENGTH_SHORT).show();
         }
+        mViewPager.setPagingEnabled(false);
     }
 
     public void chessReset(View view) {
@@ -426,6 +430,7 @@ public class MainActivity extends ActionBarActivity {
         bottomtimelayout.setVisibility(View.GONE);
 
         //Reset
+        mViewPager.setPagingEnabled(true);
     }
 
     public void chessTopPress(View view) {
