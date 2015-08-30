@@ -103,13 +103,15 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position) {
-                case 0:
-                    return new PointFragment();
-                case 1:
-                    return new TimeFragment();
-                case 2:
-                    return new ChessFragment();
+            if ((!pointgamestate) && (!timegamestate) && (!chessgamestate)) {
+                switch (position) {
+                    case 0:
+                        return new PointFragment();
+                    case 1:
+                        return new TimeFragment();
+                    case 2:
+                        return new ChessFragment();
+                }
             }
             return null;
         }
@@ -145,10 +147,10 @@ public class MainActivity extends ActionBarActivity {
     Player pointp1;
     Player pointp2;
     Timer pointtimer;
-    boolean pointgamestate;
+    public boolean pointgamestate = false;
     Log pointlog;
 
-    public void pointStart(View view) throws FileNotFoundException, IOException {
+    public void pointStart(View view) throws IOException {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         pointSetMaxLayout.setVisibility(View.GONE);
@@ -329,6 +331,11 @@ public class MainActivity extends ActionBarActivity {
      * ****************
      */
 
+    public boolean timegamestate = false;
+    Player timep1;
+    Player timep2;
+    Log timelog;
+
     public void timeLeftScore(View view) {
         //Left Player gets the Point
     }
@@ -347,7 +354,16 @@ public class MainActivity extends ActionBarActivity {
             timetext.setVisibility(View.VISIBLE);
             LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
             settimelayout.setVisibility(View.GONE);
+
+            EditText time_p1name = (EditText) findViewById(R.id.time_p1name);
+            EditText time_p2name = (EditText) findViewById(R.id.time_p2name);
+            EditText time_init_min = (EditText) findViewById(R.id.time_init_min);
+            EditText time_init_sec = (EditText) findViewById(R.id.time_init_sec);
+            TextView time_time = (TextView) findViewById(R.id.time_time);
+
+
             //Start
+            //String name, Time
         } else {
             Toast.makeText(this, getString(R.string.time_start_not_filled),
                     Toast.LENGTH_SHORT).show();
@@ -371,6 +387,8 @@ public class MainActivity extends ActionBarActivity {
      * *Methods for Chess**
      * *****************
      */
+    public boolean chessgamestate = false;
+
     public void chessStart(View vew) {
         EditText topminstring = (EditText) findViewById(R.id.chess_top_init_min);
         EditText topsecstring = (EditText) findViewById(R.id.chess_top_init_sec);
