@@ -1,4 +1,4 @@
-package com.example.calvin.pointcounter;
+package com.ctrctr.pointcounter;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void ViewLogss() {
-        //View Logss
+        //View Logs
     }
 
 
@@ -164,13 +164,18 @@ public class MainActivity extends ActionBarActivity {
         pointTimeView.setText("00:00.0");
         pointScoreText.setText("0:0");
         pointgamestate = true;
+        if (pointtimer != null) {
+            pointtimer.resetTimer();
+            pointtimer = null;
+        }
         //Start
         //String name, Initial Score, Max Score, Deuce Checkbox
         pointp1 = new Player(point_p1name.getText().toString(), 0,
                 Integer.parseInt(point_p1max.getText().toString()), checkBox.isChecked());
         pointp2 = new Player(point_p2name.getText().toString(), 0,
                 Integer.parseInt(point_p2max.getText().toString()), checkBox.isChecked());
-        pointtimer = new Timer(pointTimeView, Timer.CONST_POINT, 0l);
+        TextView[] pointTimeViewList = {pointTimeView};
+        pointtimer = new Timer(pointTimeViewList, Timer.CONST_POINT, 0l);
         pointtimer.resumeTimer();
         pointMakeStatusText(getString(R.string.point_game_started));
         //Logs
@@ -216,6 +221,8 @@ public class MainActivity extends ActionBarActivity {
                 pointlog.addCode(Logs.CONST_LINE_BREAK);
             }
             pointlog.saveLog();
+            pointp1 = null;
+            pointp2 = null;
         }
         checkBox.setEnabled(true);
         mViewPager.setPagingEnabled(true);
@@ -343,10 +350,11 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void timeStart(View view) throws IOException {
-        EditText minstring = (EditText) findViewById(R.id.time_init_min);
-        EditText secstring = (EditText) findViewById(R.id.time_init_sec);
-        if (!(minstring.getText().toString().equals("")
-                || secstring.getText().toString().equals(""))) {
+        EditText time_init_min = (EditText) findViewById(R.id.time_init_min);
+        EditText time_init_sec = (EditText) findViewById(R.id.time_init_sec);
+
+        if (!(time_init_min.getText().toString().equals("")
+                || time_init_sec.getText().toString().equals(""))) {
             TextView timetext = (TextView) findViewById(R.id.time_time);
             timetext.setVisibility(View.VISIBLE);
             LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
@@ -354,13 +362,17 @@ public class MainActivity extends ActionBarActivity {
 
             EditText time_p1name = (EditText) findViewById(R.id.time_p1name);
             EditText time_p2name = (EditText) findViewById(R.id.time_p2name);
-            EditText time_init_min = (EditText) findViewById(R.id.time_init_min);
-            EditText time_init_sec = (EditText) findViewById(R.id.time_init_sec);
             TextView time_time = (TextView) findViewById(R.id.time_time);
 
             TextView time_score = (TextView) findViewById(R.id.time_score);
             time_time.setText("00:00.0");
             time_score.setText("0:0");
+
+            if (timetimer != null) {
+                timetimer.resetTimer();
+                timetimer = null;
+            }
+
             timegamestate = true;
             //Start
             //Player Init
@@ -370,7 +382,8 @@ public class MainActivity extends ActionBarActivity {
             long timethrestime = Long.parseLong(time_init_min.getText().toString()) * 60000
                     + Long.parseLong(time_init_sec.getText().toString()) * 1000;
             //Init Timer
-            timetimer = new Timer(time_time, Timer.CONST_TIME, timethrestime);
+            TextView[] time_time_list = {time_time};
+            timetimer = new Timer(time_time_list, Timer.CONST_TIME, timethrestime);
             timetimer.resumeTimer();
             //Make statustext
             timeMakeStatusText(getString(R.string.time_game_started));
@@ -406,7 +419,6 @@ public class MainActivity extends ActionBarActivity {
         TextView timetext = (TextView) findViewById(R.id.time_time);
         LinearLayout settimelayout = (LinearLayout) findViewById(R.id.time_set_time_layout);
         TextView timescoretext = (TextView) findViewById(R.id.time_score);
-        TextView timetime = (TextView) findViewById(R.id.time_time);
         timetext.setVisibility(View.GONE);
         settimelayout.setVisibility(View.VISIBLE);
         //Reset
@@ -424,6 +436,8 @@ public class MainActivity extends ActionBarActivity {
                 timelog.addCode(Logs.CONST_LINE_BREAK);
             }
             timelog.saveLog();
+            timep1 = null;
+            timep2 = null;
         }
 
         mViewPager.setPagingEnabled(true);
@@ -433,6 +447,7 @@ public class MainActivity extends ActionBarActivity {
         //Finishes Game
         timetimer.pauseTimer();
         timegamestate = false;
+        timetimer = null;
         Player winner;
         boolean draw;
         //Output Winner and Logs
@@ -446,7 +461,7 @@ public class MainActivity extends ActionBarActivity {
             winner = timep1;
             draw = true;
         }
-        timelog.addText(getString(R.string.time_time_up));
+        timelog.addText(getString(R.string.time_up));
         timelog.addCode(Logs.CONST_LINE_BREAK);
         if (draw) {
             timeMakeStatusText(getString(R.string.time_draw));
@@ -463,10 +478,11 @@ public class MainActivity extends ActionBarActivity {
         timelog.saveLog();
 
         //Show the EditText init min and sec
-        TextView timetime = (TextView) findViewById(R.id.time_time);
-        LinearLayout time_set_time_layout = (LinearLayout) findViewById(R.id.time_set_time_layout);
-        timetime.setVisibility(View.GONE);
-        time_set_time_layout.setVisibility(View.VISIBLE);
+        //TextView timetime = (TextView) findViewById(R.id.time_time);
+        //LinearLayout time_set_time_layout = (LinearLayout) findViewById(R.id.time_set_time_layout);
+        //timetime.setVisibility(View.GONE);
+        //time_set_time_layout.setVisibility(View.VISIBLE);
+        mViewPager.setPagingEnabled(true);
     }
 
     public void timeLeftScore(View view) throws IOException {
@@ -509,22 +525,27 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
     /**
      * *****************
      * *Methods for Chess**
      * *****************
      */
     public boolean chessgamestate = false;
+    Timer chessuptime;
+    Timer chessbottomtime;
+    Logs chesslog;
 
-    public void chessStart(View vew) {
-        EditText topminstring = (EditText) findViewById(R.id.chess_top_init_min);
-        EditText topsecstring = (EditText) findViewById(R.id.chess_top_init_sec);
-        EditText bottomminstring = (EditText) findViewById(R.id.chess_bottom_init_min);
-        EditText bottomsecstring = (EditText) findViewById(R.id.chess_bottom_init_sec);
-        if (!(topminstring.getText().toString().equals("")
-                || topsecstring.getText().toString().equals("")
-                || bottomminstring.getText().toString().equals("")
-                || bottomsecstring.getText().toString().equals(""))) {
+    public void chessStart(View vew) throws IOException {
+        EditText chess_top_init_min = (EditText) findViewById(R.id.chess_top_init_min);
+        EditText chess_top_init_sec = (EditText) findViewById(R.id.chess_top_init_sec);
+        EditText chess_bottom_init_min = (EditText) findViewById(R.id.chess_bottom_init_min);
+        EditText chess_bottom_init_sec = (EditText) findViewById(R.id.chess_bottom_init_sec);
+
+        if (!(chess_top_init_min.getText().toString().equals("")
+                || chess_top_init_sec.getText().toString().equals("")
+                || chess_bottom_init_min.getText().toString().equals("")
+                || chess_bottom_init_sec.getText().toString().equals(""))) {
             LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
             LinearLayout bottominitlayout;
             bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
@@ -536,7 +557,55 @@ public class MainActivity extends ActionBarActivity {
             toptimelayout.setVisibility(View.VISIBLE);
             bottomtimelayout.setVisibility(View.VISIBLE);
 
+            if (chessuptime != null) {
+                chessuptime.resetTimer();
+                chessuptime = null;
+            }
+            if (chessbottomtime != null) {
+                chessbottomtime.resetTimer();
+                chessbottomtime = null;
+            }
             //Start
+            //Init Timer
+            chessgamestate = true;
+            TextView[] chessuptimertextviewlist = {(TextView) findViewById(R.id.chess_top_time),
+                    (TextView) findViewById(R.id.chess_top_time_inv)};
+            long topthreshold = Long.parseLong(chess_top_init_min.getText().toString()) * 60000
+                    + Long.parseLong(chess_top_init_sec.getText().toString()) * 1000;
+            chessuptime = new Timer(chessuptimertextviewlist, Timer.CONST_CHESS, topthreshold);
+
+            TextView[] chessbottimertextviewlist = {(TextView) findViewById(R.id.chess_bottom_time),
+                    (TextView) findViewById(R.id.chess_bottom_time_inv)};
+            long botthreshold = Long.parseLong(chess_bottom_init_min.getText().toString()) * 60000
+                    + Long.parseLong(chess_bottom_init_sec.getText().toString()) * 1000;
+            chessbottomtime = new Timer(chessbottimertextviewlist, Timer.CONST_CHESS, botthreshold);
+
+            //Start Timer
+            chessuptime.resumeTimer();
+            chessbottomtime.resumeTimer();
+            chessbottomtime.pauseTimer();
+
+            //Logs
+            chesslog = new Logs(path + "/chess.log");
+            chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.addText(getString(R.string.time_game_started));
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.addText(getString(R.string.chess_top_timer)
+                    + " "
+                    + chess_top_init_min.getText().toString()
+                    + getString(R.string.colon)
+                    + chess_top_init_sec.getText().toString());
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.addText(getString(R.string.chess_bottom_timer)
+                    + " "
+                    + chess_bottom_init_min.getText().toString()
+                    + getString(R.string.colon)
+                    + chess_bottom_init_sec.getText().toString());
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.saveLog();
 
             mViewPager.setPagingEnabled(false);
         } else {
@@ -544,7 +613,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void chessReset(View view) {
+    public void chessReset(View view) throws IOException {
         LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
         LinearLayout bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
         LinearLayout toptimelayout = (LinearLayout) findViewById(R.id.chess_top_time_layout);
@@ -554,20 +623,97 @@ public class MainActivity extends ActionBarActivity {
         toptimelayout.setVisibility(View.GONE);
         bottomtimelayout.setVisibility(View.GONE);
 
+        TextView chess_top_time = (TextView) findViewById(R.id.chess_top_time);
+        TextView chess_top_time_inv = (TextView) findViewById(R.id.chess_top_time_inv);
+        TextView chess_bottom_time = (TextView) findViewById(R.id.chess_bottom_time);
+        TextView chess_bottom_time_inv = (TextView) findViewById(R.id.chess_bottom_time_inv);
+        TextView[] chess_time_list = {
+                chess_top_time,
+                chess_top_time_inv,
+                chess_bottom_time,
+                chess_bottom_time_inv
+        };
+
         //Reset
+        chessgamestate = false;
+        for (TextView chess_time : chess_time_list) {
+            chess_time.setText("00:00.0");
+        }
+        chessuptime.pauseTimer();
+        chessbottomtime.pauseTimer();
+        //Logs
+        chesslog.addText(getString(R.string.reset));
+        chesslog.addCode(Logs.CONST_LINE_BREAK);
+        chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
+        for (int i = 0; i < 3; i++) {
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+        }
+        chesslog.saveLog();
+        chessuptime = null;
+        chessbottomtime = null;
+
         mViewPager.setPagingEnabled(true);
     }
 
-    public void chessTimeUp() {
+    public void chessTimeUp() throws IOException {
+        //Finishes Game
+        chessuptime.pauseTimer();
+        chessbottomtime.pauseTimer();
+        chessgamestate = false;
 
+        TextView chess_top_time = (TextView) findViewById(R.id.chess_top_time);
+        TextView chess_bottom_time = (TextView) findViewById(R.id.chess_bottom_time);
+
+        //Logs
+        chesslog.addText(getString(R.string.time_up));
+        chesslog.addCode(Logs.CONST_LINE_BREAK);
+        chesslog.addText(getString(R.string.chess_top_timer)
+                + " " + chess_top_time.getText().toString());
+        chesslog.addCode(Logs.CONST_LINE_BREAK);
+        chesslog.addText(getString(R.string.chess_bottom_timer)
+                + " " + chess_bottom_time.getText().toString());
+        chesslog.addCode(Logs.CONST_LINE_BREAK);
+        chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
+        for (int i = 0; i < 3; i++) {
+            chesslog.addCode(Logs.CONST_LINE_BREAK);
+        }
+        chesslog.saveLog();
+
+        mViewPager.setPagingEnabled(true);
     }
 
-    public void chessTopPress(View view) {
-        Toast.makeText(this, "Top Pressed", Toast.LENGTH_SHORT).show();
+    public void chessTopPress(View view) throws IOException {
+        //Toast.makeText(this, "Top Pressed", Toast.LENGTH_SHORT).show();
+
+        if (chessgamestate) {
+            chessuptime.pauseTimer();
+            chessbottomtime.resumeTimer();
+
+            //Logs
+            chesslog.addText(getString(R.string.chess_top_player)
+                    + " " + getString(R.string.chess_presses_buttom));
+            chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+        } else {
+            Toast.makeText(this, getString(R.string.game_not_start),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void chessBottomPress(View view) {
-        Toast.makeText(this, "Bottom Pressed", Toast.LENGTH_SHORT).show();
+    public void chessBottomPress(View view) throws IOException {
+        //Toast.makeText(this, "Bottom Pressed", Toast.LENGTH_SHORT).show();
+
+        if (chessgamestate) {
+            chessuptime.resumeTimer();
+            chessbottomtime.pauseTimer();
+
+            //Logs
+            chesslog.addText(getString(R.string.chess_bottom_player)
+                    + " " + getString(R.string.chess_presses_buttom));
+            chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+        } else {
+            Toast.makeText(this, getString(R.string.game_not_start),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -581,16 +727,16 @@ public class MainActivity extends ActionBarActivity {
         String curtime;
         private final int REFRESH_RATE = 100;
         private Handler mHandler = new Handler();
-        TextView currenttime;
+        TextView[] currenttimelist;
         private int type;
         public static final int CONST_POINT = 0;
         public static final int CONST_TIME = 1;
         public static final int CONST_CHESS = 2;
 
-        public Timer(TextView currenttime, int type, long thresholdtime) {
+        public Timer(TextView[] currenttimelist, int type, long thresholdtime) {
             this.starttime = System.currentTimeMillis();
             this.thresholdtime = thresholdtime;
-            this.currenttime = currenttime;
+            this.currenttimelist = currenttimelist;
             mHandler.removeCallbacks(this.startTimer);
             this.type = type;
         }
@@ -598,7 +744,9 @@ public class MainActivity extends ActionBarActivity {
         public void resetTimer() {
             mHandler.removeCallbacks(startTimer);
             elapsedtime = 0;
-            currenttime.setText("00:00:0");
+            for (TextView currenttime : currenttimelist) {
+                currenttime.setText("00:00:0");
+            }
         }
 
         public void pauseTimer() {
@@ -612,13 +760,9 @@ public class MainActivity extends ActionBarActivity {
         }
 
         public boolean timeLimit() {
-            if ((type == CONST_TIME || type == CONST_CHESS)
+            return (type == CONST_TIME || type == CONST_CHESS)
                     && (elapsedtime >= thresholdtime)
-                    && (thresholdtime != 0l)) {
-                return true;
-            } else {
-                return false;
-            }
+                    && (thresholdtime != 0l);
         }
 
         public void stoptimer() throws IOException {
@@ -647,8 +791,11 @@ public class MainActivity extends ActionBarActivity {
                     } catch (IOException e) {
                         Log.e("Exception", "File Write Failed: " + e.toString());
                     }
+                    return;
                 }
-                currenttime.setText(curtime);
+                for (TextView currenttime : currenttimelist) {
+                    currenttime.setText(curtime);
+                }
                 mHandler.postDelayed(this, REFRESH_RATE);
             }
         };

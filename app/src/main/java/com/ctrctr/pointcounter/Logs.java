@@ -1,4 +1,4 @@
-package com.example.calvin.pointcounter;
+package com.ctrctr.pointcounter;
 
 import java.io.File;
 import java.io.FileNotFoundException;

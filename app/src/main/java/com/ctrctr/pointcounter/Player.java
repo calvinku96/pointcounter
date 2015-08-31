@@ -1,4 +1,4 @@
-package com.example.calvin.pointcounter;
+package com.ctrctr.pointcounter;
 
 /**
  * Created by roycesanto on 6/7/2015.

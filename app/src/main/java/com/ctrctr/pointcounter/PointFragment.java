@@ -1,4 +1,5 @@
-package com.example.calvin.pointcounter;
+package com.ctrctr.pointcounter;
+
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -13,14 +14,14 @@ import android.widget.TextView;
  * Created by calvin on 6/6/15.
  */
 
-public class TimeFragment extends Fragment {
+public class PointFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View abc = inflater.inflate(R.layout.fragment_time, container, false);
-        TextView text = (TextView) abc.findViewById(R.id.time_time);
-        TextView timestatustext = (TextView) abc.findViewById(R.id.time_status_text);
-        text.setVisibility(View.GONE);
-        timestatustext.setVisibility(View.GONE);
+        View abc =  inflater.inflate(R.layout.fragment_point, container, false);
+        TextView pointScoreText = (TextView) abc.findViewById(R.id.point_score);
+        pointScoreText.setVisibility(View.GONE);
+        TextView pointstatustext = (TextView) abc.findViewById(R.id.point_status_text);
+        pointstatustext.setVisibility(View.GONE);
         return abc;
     }
     @Override

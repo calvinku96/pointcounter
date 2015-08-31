@@ -31,6 +31,7 @@
     <string name="reset">Game reset</string>
     <string name="game_not_start">Please start game first</string>
     <string name="scores">scores!</string>
+    <string name="time_up">Time Up!</string>
 
     //Point
     <string name="point_max">Max Points</string>
@@ -48,9 +49,13 @@
     <string name="time_start_not_filled">Please fill in the initial time</string>
     <string name="time_game_started">Game Started</string>
     <string name="time_time_limit_string">Time Limit:</string>
-    <string name="time_time_up">Time Up!</string>
     <string name="time_draw">Draw!</string>
 
     //Chess'
     <string name="chess_start_not_filled">Please fill in the initial time</string>
+    <string name="chess_top_player">Top Player</string>
+    <string name="chess_bottom_player">Bottom Player</string>
+    <string name="chess_top_timer">Top Timer:</string>
+    <string name="chess_bottom_timer">Bottom Timer:</string>
+    <string name="chess_presses_buttom">Presses Button</string>
 </resources>

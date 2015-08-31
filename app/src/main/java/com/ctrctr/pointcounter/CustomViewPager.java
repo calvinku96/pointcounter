@@ -1,4 +1,4 @@
-package com.example.calvin.pointcounter;
+package com.ctrctr.pointcounter;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
