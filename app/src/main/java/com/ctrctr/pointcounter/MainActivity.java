@@ -635,22 +635,28 @@ public class MainActivity extends ActionBarActivity {
         };
 
         //Reset
-        chessgamestate = false;
-        for (TextView chess_time : chess_time_list) {
-            chess_time.setText("00:00.0");
-        }
-        chessuptime.pauseTimer();
-        chessbottomtime.pauseTimer();
-        //Logs
-        chesslog.addText(getString(R.string.reset));
-        chesslog.addCode(Logs.CONST_LINE_BREAK);
-        chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
-        for (int i = 0; i < 3; i++) {
+        if (chessgamestate) {
+            chessgamestate = false;
+            for (TextView chess_time : chess_time_list) {
+                chess_time.setText("00:00.0");
+            }
+            if (chessuptime != null) {
+                chessuptime.pauseTimer();
+            }
+            if (chessbottomtime != null) {
+                chessbottomtime.pauseTimer();
+            }
+            //Logs
+            chesslog.addText(getString(R.string.reset));
             chesslog.addCode(Logs.CONST_LINE_BREAK);
+            chesslog.addCode(Logs.CONST_TWENTY_EQUALS);
+            for (int i = 0; i < 3; i++) {
+                chesslog.addCode(Logs.CONST_LINE_BREAK);
+            }
+            chesslog.saveLog();
+            chessuptime = null;
+            chessbottomtime = null;
         }
-        chesslog.saveLog();
-        chessuptime = null;
-        chessbottomtime = null;
 
         mViewPager.setPagingEnabled(true);
     }
