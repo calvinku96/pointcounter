@@ -14,7 +14,7 @@
             android:layout_weight="0.5"
             android:clickable="true"
             android:onClick="chessTopPress"
-            android:background="#ffff0000">
+            android:background="#4c000000">
 
             <LinearLayout
                 android:id="@+id/chess_top_init_layout"
@@ -83,7 +83,7 @@
             android:layout_weight="0.5"
             android:clickable="true"
             android:onClick="chessBottomPress"
-            android:background="#ff0000ff">
+            android:background="#ffffff">
 
             <LinearLayout
                 android:id="@+id/chess_bottom_init_layout"
