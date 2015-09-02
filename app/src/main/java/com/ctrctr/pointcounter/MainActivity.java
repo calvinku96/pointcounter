@@ -237,12 +237,16 @@ public class MainActivity extends ActionBarActivity {
         changepausebutton(paused);
 
         hideKeyboard();
+        point_p1name.setEnabled(false);
+        point_p2name.setEnabled(false);
     }
 
     public void pointReset(View view) throws IOException {
         TextView pointScoreText = (TextView) findViewById(R.id.point_score);
         LinearLayout pointSetMaxLayout = (LinearLayout) findViewById(R.id.point_setmax_layout);
         CheckBox checkBox = (CheckBox) findViewById(R.id.point_deuce_checkBox);
+        TextView point_p1name = (TextView) findViewById(R.id.point_p1name);
+        TextView point_p2name = (TextView) findViewById(R.id.point_p2name);
         pointSetMaxLayout.setVisibility(View.VISIBLE);
         pointScoreText.setVisibility(View.GONE);
         //Reset
@@ -268,6 +272,9 @@ public class MainActivity extends ActionBarActivity {
 
         paused = false;
         changepausebutton(paused);
+
+        point_p1name.setEnabled(true);
+        point_p2name.setEnabled(true);
     }
 
     public void pointLeftScore(View view) throws IOException {
@@ -347,6 +354,13 @@ public class MainActivity extends ActionBarActivity {
             }
             pointlog.saveLog();
             mViewPager.setPagingEnabled(true);
+
+
+            TextView point_p1name = (TextView) findViewById(R.id.point_p1name);
+            TextView point_p2name = (TextView) findViewById(R.id.point_p2name);
+
+            point_p1name.setEnabled(true);
+            point_p2name.setEnabled(true);
         }
 
         //Deuce
@@ -451,6 +465,9 @@ public class MainActivity extends ActionBarActivity {
             changepausebutton(paused);
 
             hideKeyboard();
+
+            time_p1name.setEnabled(false);
+            time_p2name.setEnabled(false);
         } else {
             Toast.makeText(this, getString(R.string.time_start_not_filled),
                     Toast.LENGTH_SHORT).show();
@@ -486,6 +503,12 @@ public class MainActivity extends ActionBarActivity {
 
         paused = false;
         changepausebutton(paused);
+
+        EditText time_p1name = (EditText) findViewById(R.id.time_p1name);
+        EditText time_p2name = (EditText) findViewById(R.id.time_p2name);
+
+        time_p1name.setEnabled(true);
+        time_p2name.setEnabled(true);
     }
 
     public void timeTimeUp() throws IOException {
@@ -531,6 +554,12 @@ public class MainActivity extends ActionBarActivity {
 
         paused = false;
         changepausebutton(paused);
+
+        EditText time_p1name = (EditText) findViewById(R.id.time_p1name);
+        EditText time_p2name = (EditText) findViewById(R.id.time_p2name);
+
+        time_p1name.setEnabled(true);
+        time_p2name.setEnabled(true);
     }
 
     public void timeLeftScore(View view) throws IOException {
