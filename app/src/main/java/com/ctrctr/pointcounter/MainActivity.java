@@ -320,6 +320,7 @@ public class MainActivity extends ActionBarActivity {
                 pointlog.addCode(Logs.CONST_LINE_BREAK);
             }
             pointlog.saveLog();
+            mViewPager.setPagingEnabled(true);
         }
 
         //Deuce
