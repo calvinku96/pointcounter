@@ -1,5 +1,8 @@
 package com.ctrctr.pointcounter;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -7,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
      */
     CustomViewPager mViewPager;
     public static String path;
+    public boolean paused = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,9 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_view_log) {
             ViewLogss();
+            return true;
+        } else if (id == R.id.action_pause) {
+            pauseGame();
             return true;
         }
 
@@ -135,6 +143,13 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public static Drawable getDrawable(Context context, int resource) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return context.getResources().getDrawable(resource);
+        } else {
+            return context.getResources().getDrawable(resource, null);
+        }
+    }
 
     /**
      * *****************
@@ -198,6 +213,8 @@ public class MainActivity extends ActionBarActivity {
         checkBox.setEnabled(false);
 
         mViewPager.setPagingEnabled(false);
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void pointReset(View view) throws IOException {
@@ -226,11 +243,14 @@ public class MainActivity extends ActionBarActivity {
         }
         checkBox.setEnabled(true);
         mViewPager.setPagingEnabled(true);
+
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void pointLeftScore(View view) throws IOException {
         //Left Player gets the Point
-        if (pointgamestate) {
+        if (pointgamestate && (!paused)) {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
             pointp1.addScore(1);
             pointScoreText.setText(Integer.toString(pointp1.getScore())
@@ -248,7 +268,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void pointRightScore(View view) throws IOException {
         //Right Player gets the Point
-        if (pointgamestate) {
+        if (pointgamestate && (!paused)) {
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
 
             pointp2.addScore(1);
@@ -409,6 +429,9 @@ public class MainActivity extends ActionBarActivity {
 
 
             mViewPager.setPagingEnabled(false);
+
+            paused = false;
+            changepausebutton(paused);
         } else {
             Toast.makeText(this, getString(R.string.time_start_not_filled),
                     Toast.LENGTH_SHORT).show();
@@ -441,6 +464,9 @@ public class MainActivity extends ActionBarActivity {
         }
 
         mViewPager.setPagingEnabled(true);
+
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void timeTimeUp() throws IOException {
@@ -483,11 +509,14 @@ public class MainActivity extends ActionBarActivity {
         //timetime.setVisibility(View.GONE);
         //time_set_time_layout.setVisibility(View.VISIBLE);
         mViewPager.setPagingEnabled(true);
+
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void timeLeftScore(View view) throws IOException {
         //Left Player gets the Point
-        if (timegamestate) {
+        if (timegamestate && (!paused)) {
             TextView timeScoreText = (TextView) findViewById(R.id.time_score);
             timep1.addScore(1);
             timeScoreText.setText(Integer.toString(timep1.getScore())
@@ -503,7 +532,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void timeRightScore(View view) throws IOException {
         //Right Player gets the Point
-        if (timegamestate) {
+        if (timegamestate && (!paused)) {
             TextView timeScoreText = (TextView) findViewById(R.id.time_score);
             timep2.addScore(1);
             timeScoreText.setText(Integer.toString(timep1.getScore())
@@ -525,7 +554,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
     /**
      * *****************
      * *Methods for Chess**
@@ -535,6 +563,8 @@ public class MainActivity extends ActionBarActivity {
     Timer chessuptime;
     Timer chessbottomtime;
     Logs chesslog;
+    public boolean uppaused = false;
+    public boolean bottompaused = false;
 
     public void chessStart(View vew) throws IOException {
         EditText chess_top_init_min = (EditText) findViewById(R.id.chess_top_init_min);
@@ -608,6 +638,9 @@ public class MainActivity extends ActionBarActivity {
             chesslog.saveLog();
 
             mViewPager.setPagingEnabled(false);
+
+            paused = false;
+            changepausebutton(paused);
         } else {
             Toast.makeText(this, getString(R.string.chess_start_not_filled), Toast.LENGTH_SHORT).show();
         }
@@ -659,6 +692,9 @@ public class MainActivity extends ActionBarActivity {
         }
 
         mViewPager.setPagingEnabled(true);
+
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void chessTimeUp() throws IOException {
@@ -686,19 +722,24 @@ public class MainActivity extends ActionBarActivity {
         chesslog.saveLog();
 
         mViewPager.setPagingEnabled(true);
+
+        paused = false;
+        changepausebutton(paused);
     }
 
     public void chessTopPress(View view) throws IOException {
         //Toast.makeText(this, "Top Pressed", Toast.LENGTH_SHORT).show();
 
-        if (chessgamestate) {
-            chessuptime.pauseTimer();
-            chessbottomtime.resumeTimer();
+        if (chessgamestate && (!paused)) {
+            if (!chessuptime.getIsPaused()) {
+                chessuptime.pauseTimer();
+                chessbottomtime.resumeTimer();
 
-            //Logs
-            chesslog.addText(getString(R.string.chess_top_player)
-                    + " " + getString(R.string.chess_presses_buttom));
-            chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+                //Logs
+                chesslog.addText(getString(R.string.chess_top_player)
+                        + " " + getString(R.string.chess_presses_buttom));
+                chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+            }
         } else {
             Toast.makeText(this, getString(R.string.game_not_start),
                     Toast.LENGTH_SHORT).show();
@@ -708,14 +749,16 @@ public class MainActivity extends ActionBarActivity {
     public void chessBottomPress(View view) throws IOException {
         //Toast.makeText(this, "Bottom Pressed", Toast.LENGTH_SHORT).show();
 
-        if (chessgamestate) {
-            chessuptime.resumeTimer();
-            chessbottomtime.pauseTimer();
+        if (chessgamestate && (!paused)) {
+            if (!chessbottomtime.getIsPaused()) {
+                chessuptime.resumeTimer();
+                chessbottomtime.pauseTimer();
 
-            //Logs
-            chesslog.addText(getString(R.string.chess_bottom_player)
-                    + " " + getString(R.string.chess_presses_buttom));
-            chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+                //Logs
+                chesslog.addText(getString(R.string.chess_bottom_player)
+                        + " " + getString(R.string.chess_presses_buttom));
+                chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
+            }
         } else {
             Toast.makeText(this, getString(R.string.game_not_start),
                     Toast.LENGTH_SHORT).show();
@@ -738,6 +781,7 @@ public class MainActivity extends ActionBarActivity {
         public static final int CONST_POINT = 0;
         public static final int CONST_TIME = 1;
         public static final int CONST_CHESS = 2;
+        private boolean isPaused;
 
         public Timer(TextView[] currenttimelist, int type, long thresholdtime) {
             this.starttime = System.currentTimeMillis();
@@ -745,6 +789,7 @@ public class MainActivity extends ActionBarActivity {
             this.currenttimelist = currenttimelist;
             mHandler.removeCallbacks(this.startTimer);
             this.type = type;
+            isPaused = false;
         }
 
         public void resetTimer() {
@@ -753,16 +798,19 @@ public class MainActivity extends ActionBarActivity {
             for (TextView currenttime : currenttimelist) {
                 currenttime.setText("00:00:0");
             }
+            isPaused = false;
         }
 
         public void pauseTimer() {
             mHandler.removeCallbacks(startTimer);
+            isPaused = true;
         }
 
         public void resumeTimer() {
             starttime = System.currentTimeMillis() - elapsedtime;
             mHandler.removeCallbacks(startTimer);
             mHandler.postDelayed(startTimer, 0);
+            isPaused = false;
         }
 
         public boolean timeLimit() {
@@ -776,9 +824,11 @@ public class MainActivity extends ActionBarActivity {
             switch (type) {
                 case CONST_TIME:
                     timeTimeUp();
+                    isPaused = false;
                     break;
                 case CONST_CHESS:
                     chessTimeUp();
+                    isPaused = false;
                     break;
                 default:
                     break;
@@ -855,6 +905,80 @@ public class MainActivity extends ActionBarActivity {
 		/* Setting the timer text to the elapsed time */
             return minutes + ":" + seconds + "." + milliseconds;
         }
-    }
-}
 
+        public boolean getIsPaused() {
+            return isPaused;
+        }
+    }
+
+
+    /**
+     * Handles game pauses
+     */
+    boolean upispaused;
+
+    public void pauseGame() {
+        if (paused) {
+            //Play
+            paused = false;
+            if (pointgamestate) {
+                //play point
+                pointtimer.resumeTimer();
+                changepausebutton(paused);
+            } else if (timegamestate) {
+                //play time
+                timetimer.resumeTimer();
+                changepausebutton(paused);
+            } else if (chessgamestate) {
+                //play chess
+                if (upispaused) {
+                    chessbottomtime.resumeTimer();
+                } else {
+                    chessuptime.resumeTimer();
+                }
+                changepausebutton(paused);
+            } else {
+                Toast.makeText(this, getString(R.string.game_not_start), Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            paused = true;
+            if (pointgamestate) {
+                //pause point
+                pointtimer.pauseTimer();
+                changepausebutton(paused);
+            } else if (timegamestate) {
+                //pause time
+                timetimer.pauseTimer();
+                changepausebutton(paused);
+            } else if (chessgamestate) {
+                //pause chess
+                if (chessuptime.getIsPaused()) {
+                    chessbottomtime.pauseTimer();
+                    upispaused = true;
+                } else if (chessbottomtime.getIsPaused()) {
+                    chessuptime.pauseTimer();
+                    upispaused = false;
+                }
+                changepausebutton(paused);
+            } else {
+                Toast.makeText(this, getString(R.string.game_not_start_pause_button),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void changepausebutton(boolean condition) {
+        ActionMenuItemView pausebutton = (ActionMenuItemView) findViewById(R.id.action_pause);
+        if (condition) {
+            //pause to play
+            pausebutton.setIcon(getDrawable(this, R.drawable.ic_play_arrow_white_24dp));
+            pausebutton.setTitle(getString(R.string.menu_play));
+        } else {
+            //play to pause
+            pausebutton.setIcon(getDrawable(this, R.drawable.ic_pause_white_24dp));
+            pausebutton.setTitle(getString(R.string.menu_pause));
+        }
+    }
+
+}

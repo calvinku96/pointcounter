@@ -29,9 +29,12 @@
     <string name="player1semicolon">Player 1:</string>
     <string name="player2semicolon">Player 2:</string>
     <string name="reset">Game reset</string>
-    <string name="game_not_start">Please start game first</string>
+    <string name="game_not_start">Please start game first and/or press resume button</string>
+    <string name="game_not_start_pause_button">Please start game first</string>
     <string name="scores">scores!</string>
     <string name="time_up">Time Up!</string>
+    <string name="menu_pause">Pause</string>
+    <string name="menu_play">Play</string>
 
     //Point
     <string name="point_max">Max Points</string>
@@ -51,7 +54,7 @@
     <string name="time_time_limit_string">Time Limit:</string>
     <string name="time_draw">Draw!</string>
 
-    //Chess'
+    //Chess
     <string name="chess_start_not_filled">Please fill in the initial time</string>
     <string name="chess_top_player">Top Player</string>
     <string name="chess_bottom_player">Bottom Player</string>
