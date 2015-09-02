@@ -7,6 +7,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="view_log">View Log</string>
     <string name="action_settings">Settings</string>
+    <string name="action_view_log_delete">Delete Log</string>
 
     //Common
     <string name="score_zero">0:0</string>
@@ -74,4 +75,9 @@
     <string name="view_log_point">Point</string>
     <string name="view_log_time">Time</string>
     <string name="view_log_chess">Chess</string>
+    <string name="view_log_delete_dialog_title">Which log to delete?</string>
+    <string name="view_log_OK">OK</string>
+    <string name="view_log_cancel">Cancel</string>
+    <string name="view_log_deleted">Selected log(s) deleted</string>
+
 </resources>

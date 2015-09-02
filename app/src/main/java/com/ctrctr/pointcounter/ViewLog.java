@@ -2,9 +2,13 @@ package com.ctrctr.pointcounter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -15,13 +19,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewLog extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -105,7 +108,12 @@ public class ViewLog extends AppCompatActivity implements ActionBar.TabListener 
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_view_log_delete) {
+            try {
+                deleteLogDialog();
+            } catch (IOException e) {
+                Log.e("Exception", "File Write Failed: " + e.toString());
+            }
             return true;
         }
 
@@ -244,4 +252,83 @@ public class ViewLog extends AppCompatActivity implements ActionBar.TabListener 
         }
         return contentsarray;
     }
+
+    public void resetLog(String string) throws IOException {
+        String path = getFilesDir().getAbsolutePath();
+        File file = new File(path + string);
+        FileOutputStream stream = new FileOutputStream(file, false);
+        try {
+            stream.write("".getBytes());
+        } catch (IOException e) {
+            Log.e("Exception", "File Write Failed: " + e.toString());
+        } finally {
+            stream.close();
+        }
+        Toast.makeText(this, "Log file cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    public void deleteLogDialog() throws IOException {
+        AlertDialog dialog;
+        final CharSequence[] items = {
+                getString(R.string.view_log_point),
+                getString(R.string.view_log_time),
+                getString(R.string.view_log_chess)};
+        //arraylist to keep the selected items
+        final ArrayList selectedItems = new ArrayList();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.view_log_delete_dialog_title));
+        builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                if (isChecked) {
+                    //If the user checked the item, add it to the selected items
+                    selectedItems.add(indexSelected);
+                } else if (selectedItems.contains(indexSelected)) {
+                    selectedItems.remove(Integer.valueOf(indexSelected));
+                }
+            }
+        }).setPositiveButton(getString(R.string.view_log_OK), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //Code when the user click OK
+                try {
+                    deleteLog(selectedItems);
+                } catch (IOException e) {
+                    Log.e("Exception", "File Write Failed: " + e.toString());
+                }
+
+            }
+        }).setNegativeButton(getString(R.string.view_log_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //Code when user clicked on Cancel
+            }
+        });
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void deleteLog(ArrayList<Integer> selectedItems) throws IOException {
+        for (int items : selectedItems) {
+            switch (items) {
+                case 0:
+                    resetLog("/point.log");
+                    log_string_array[0] = "";
+                    break;
+                case 1:
+                    resetLog("/time.log");
+                    log_string_array[1] = "";
+                    break;
+                case 2:
+                    resetLog("/chess.log");
+                    log_string_array[2] = "";
+                    break;
+                default:
+                    break;
+            }
+        }
+        Toast.makeText(this, getString(R.string.view_log_deleted), Toast.LENGTH_SHORT).show();
+    }
+
 }
