@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -151,6 +152,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            view.clearFocus();
+            InputMethodManager imm;
+            imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     /**
      * *****************
      * *Methods for Point**
@@ -215,6 +226,8 @@ public class MainActivity extends ActionBarActivity {
         mViewPager.setPagingEnabled(false);
         paused = false;
         changepausebutton(paused);
+
+        hideKeyboard();
     }
 
     public void pointReset(View view) throws IOException {
@@ -433,6 +446,8 @@ public class MainActivity extends ActionBarActivity {
 
             paused = false;
             changepausebutton(paused);
+
+            hideKeyboard();
         } else {
             Toast.makeText(this, getString(R.string.time_start_not_filled),
                     Toast.LENGTH_SHORT).show();
@@ -564,8 +579,6 @@ public class MainActivity extends ActionBarActivity {
     Timer chessuptime;
     Timer chessbottomtime;
     Logs chesslog;
-    public boolean uppaused = false;
-    public boolean bottompaused = false;
 
     public void chessStart(View vew) throws IOException {
         EditText chess_top_init_min = (EditText) findViewById(R.id.chess_top_init_min);
@@ -577,6 +590,7 @@ public class MainActivity extends ActionBarActivity {
                 || chess_top_init_sec.getText().toString().equals("")
                 || chess_bottom_init_min.getText().toString().equals("")
                 || chess_bottom_init_sec.getText().toString().equals(""))) {
+            hideKeyboard();
             LinearLayout topinitlayout = (LinearLayout) findViewById(R.id.chess_top_init_layout);
             LinearLayout bottominitlayout;
             bottominitlayout = (LinearLayout) findViewById(R.id.chess_bottom_init_layout);
@@ -612,9 +626,7 @@ public class MainActivity extends ActionBarActivity {
             chessbottomtime = new Timer(chessbottimertextviewlist, Timer.CONST_CHESS, botthreshold);
 
             //Start Timer
-            chessuptime.resumeTimer();
             chessbottomtime.resumeTimer();
-            chessbottomtime.pauseTimer();
 
             //Logs
             chesslog = new Logs(path + "/chess.log");
@@ -642,6 +654,7 @@ public class MainActivity extends ActionBarActivity {
 
             paused = false;
             changepausebutton(paused);
+
         } else {
             Toast.makeText(this, getString(R.string.chess_start_not_filled), Toast.LENGTH_SHORT).show();
         }
