@@ -65,4 +65,13 @@
     <string name="chess_presses_button">Presses button at</string>
     <string name="chess_top_time">Top Time:</string>
     <string name="chess_bottom_time">Bottom Time:</string>
+    <string name="title_activity_view_log">ViewLog</string>
+
+    //ViewLog
+    <string name="title_section1">Point</string>
+    <string name="title_section2">Time</string>
+    <string name="title_section3">Chess</string>
+    <string name="view_log_point">Point</string>
+    <string name="view_log_time">Time</string>
+    <string name="view_log_chess">Chess</string>
 </resources>

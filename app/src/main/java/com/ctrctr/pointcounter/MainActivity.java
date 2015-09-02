@@ -98,7 +98,13 @@ public class MainActivity extends ActionBarActivity {
 
     public void ViewLogs() {
         //View Logs
-   }
+        if (pointgamestate || timegamestate || chessgamestate) {
+            Toast.makeText(this, getString(R.string.view_log_string), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(this, ViewLog.class);
+            startActivity(intent);
+        }
+    }
 
 
     /**
