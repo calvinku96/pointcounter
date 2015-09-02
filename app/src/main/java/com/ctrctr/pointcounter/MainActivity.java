@@ -1,6 +1,7 @@
 package com.ctrctr.pointcounter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -83,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_view_log) {
-            ViewLogss();
+            ViewLogs();
             return true;
         } else if (id == R.id.action_pause) {
             pauseGame();
@@ -93,9 +96,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void ViewLogss() {
+    public void ViewLogs() {
         //View Logs
-    }
+   }
 
 
     /**
@@ -264,12 +267,14 @@ public class MainActivity extends ActionBarActivity {
     public void pointLeftScore(View view) throws IOException {
         //Left Player gets the Point
         if (pointgamestate && (!paused)) {
+            TextView pointTimeView = (TextView) findViewById(R.id.point_time);
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
             pointp1.addScore(1);
             pointScoreText.setText(Integer.toString(pointp1.getScore())
                     + ":" + Integer.toString(pointp2.getScore()));
             pointMakeStatusText(pointp1.getName() + " " + getString(R.string.scores));
-            pointlog.addText(pointp1.getName() + " " + getString(R.string.scores));
+            pointlog.addText(pointp1.getName() + " " + getString(R.string.scored_at_time)
+                    + " " + pointTimeView.getText().toString());
             pointlog.addCodeAndSave(Logs.CONST_LINE_BREAK);
             pointChangeLeftRight();
             checkGameEnd(pointp1, pointp2);
@@ -282,13 +287,14 @@ public class MainActivity extends ActionBarActivity {
     public void pointRightScore(View view) throws IOException {
         //Right Player gets the Point
         if (pointgamestate && (!paused)) {
+            TextView pointTimeView = (TextView) findViewById(R.id.point_time);
             TextView pointScoreText = (TextView) findViewById(R.id.point_score);
-
             pointp2.addScore(1);
             pointScoreText.setText(Integer.toString(pointp1.getScore())
                     + ":" + Integer.toString(pointp2.getScore()));
             pointMakeStatusText(pointp2.getName() + " " + getString(R.string.scores));
-            pointlog.addText(pointp2.getName() + " " + getString(R.string.scores));
+            pointlog.addText(pointp2.getName() + " " + getString(R.string.scored_at_time)
+                    + " " + pointTimeView.getText().toString());
             pointlog.addCodeAndSave(Logs.CONST_LINE_BREAK);
             pointChangeLeftRight();
             checkGameEnd(pointp2, pointp1);
@@ -315,6 +321,7 @@ public class MainActivity extends ActionBarActivity {
             rightradio.setChecked(false);
             pointlog.addText(getString(R.string.point_radio_position)
                     + " " + getString(R.string.point_left));
+            pointlog.addCodeAndSave(Logs.CONST_LINE_BREAK);
         }
     }
 
@@ -342,24 +349,14 @@ public class MainActivity extends ActionBarActivity {
             lose.deuce(1);
             pointMakeStatusText(getString(R.string.deuce));
             pointlog.addText(getString(R.string.deuce));
-            pointlog.addCode(Logs.CONST_LINE_BREAK);
-            pointlog.addCode(Logs.CONST_TWENTY_EQUALS);
-            for (int i = 0; i < 3; i++) {
-                pointlog.addCode(Logs.CONST_LINE_BREAK);
-            }
-            pointlog.saveLog();
+            pointlog.addCodeAndSave(Logs.CONST_LINE_BREAK);
         }
 
         //Match point
         else if (win.matchPoint()) {
             pointMakeStatusText(getString(R.string.matchpoint));
             pointlog.addText(getString(R.string.matchpoint));
-            pointlog.addCode(Logs.CONST_LINE_BREAK);
-            pointlog.addCode(Logs.CONST_TWENTY_EQUALS);
-            for (int i = 0; i < 3; i++) {
-                pointlog.addCode(Logs.CONST_LINE_BREAK);
-            }
-            pointlog.saveLog();
+            pointlog.addCodeAndSave(Logs.CONST_LINE_BREAK);
         }
     }
 
@@ -533,12 +530,14 @@ public class MainActivity extends ActionBarActivity {
     public void timeLeftScore(View view) throws IOException {
         //Left Player gets the Point
         if (timegamestate && (!paused)) {
+            TextView timeTimeView = (TextView) findViewById(R.id.time_time);
             TextView timeScoreText = (TextView) findViewById(R.id.time_score);
             timep1.addScore(1);
             timeScoreText.setText(Integer.toString(timep1.getScore())
                     + ":" + Integer.toString(timep2.getScore()));
             timeMakeStatusText(timep1.getName() + " " + getString(R.string.scores));
-            timelog.addText(timep1.getName() + " " + getString(R.string.scores));
+            timelog.addText(timep1.getName() + " " + getString(R.string.scored_at_time)
+                    + " " + timeTimeView.getText().toString());
             timelog.addCodeAndSave(Logs.CONST_LINE_BREAK);
         } else {
             Toast.makeText(this, getString(R.string.game_not_start),
@@ -549,12 +548,14 @@ public class MainActivity extends ActionBarActivity {
     public void timeRightScore(View view) throws IOException {
         //Right Player gets the Point
         if (timegamestate && (!paused)) {
+            TextView timeTimeView = (TextView) findViewById(R.id.time_time);
             TextView timeScoreText = (TextView) findViewById(R.id.time_score);
             timep2.addScore(1);
             timeScoreText.setText(Integer.toString(timep1.getScore())
                     + ":" + Integer.toString(timep2.getScore()));
             timeMakeStatusText(timep2.getName() + " " + getString(R.string.scores));
-            timelog.addText(timep2.getName() + " " + getString(R.string.scores));
+            timelog.addText(timep2.getName() + " " + getString(R.string.scored_at_time)
+                    + " " + timeTimeView.getText().toString());
             timelog.addCodeAndSave(Logs.CONST_LINE_BREAK);
         } else {
             Toast.makeText(this, getString(R.string.game_not_start),
@@ -745,13 +746,21 @@ public class MainActivity extends ActionBarActivity {
         //Toast.makeText(this, "Top Pressed", Toast.LENGTH_SHORT).show();
 
         if (chessgamestate && (!paused)) {
+            TextView chessTopTimeView = (TextView) findViewById(R.id.chess_top_time);
+            TextView chessBottomTimeView = (TextView) findViewById(R.id.chess_bottom_time);
             if (!chessuptime.getIsPaused()) {
                 chessuptime.pauseTimer();
                 chessbottomtime.resumeTimer();
 
                 //Logs
                 chesslog.addText(getString(R.string.chess_top_player)
-                        + " " + getString(R.string.chess_presses_buttom));
+                        + " " + getString(R.string.chess_presses_button));
+                chesslog.addCode(Logs.CONST_LINE_BREAK);
+                chesslog.addText(getString(R.string.chess_top_time)
+                        + " " + chessTopTimeView.getText().toString());
+                chesslog.addCode(Logs.CONST_LINE_BREAK);
+                chesslog.addText(getString(R.string.chess_bottom_time)
+                        + " " + chessBottomTimeView.getText().toString());
                 chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
             }
         } else {
@@ -764,13 +773,21 @@ public class MainActivity extends ActionBarActivity {
         //Toast.makeText(this, "Bottom Pressed", Toast.LENGTH_SHORT).show();
 
         if (chessgamestate && (!paused)) {
+            TextView chessTopTimeView = (TextView) findViewById(R.id.chess_top_time);
+            TextView chessBottomTimeView = (TextView) findViewById(R.id.chess_bottom_time);
             if (!chessbottomtime.getIsPaused()) {
                 chessuptime.resumeTimer();
                 chessbottomtime.pauseTimer();
 
                 //Logs
                 chesslog.addText(getString(R.string.chess_bottom_player)
-                        + " " + getString(R.string.chess_presses_buttom));
+                        + " " + getString(R.string.chess_presses_button));
+                chesslog.addCode(Logs.CONST_LINE_BREAK);
+                chesslog.addText(getString(R.string.chess_top_time)
+                        + " " + chessTopTimeView.getText().toString());
+                chesslog.addCode(Logs.CONST_LINE_BREAK);
+                chesslog.addText(getString(R.string.chess_bottom_time)
+                        + " " + chessBottomTimeView.getText().toString());
                 chesslog.addCodeAndSave(Logs.CONST_LINE_BREAK);
             }
         } else {
